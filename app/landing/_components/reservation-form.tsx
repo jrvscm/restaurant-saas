@@ -16,6 +16,8 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { CalendarIcon, Clock, Users } from 'lucide-react';
+import { Icon } from '@/components/custom-icons';
+import { MoveRight } from 'lucide-react';
 
 export const ReservationForm = () => {
   const [date, setDate] = React.useState<Date | null>(null);
@@ -34,18 +36,31 @@ export const ReservationForm = () => {
   ];
 
   return (
-    <div className="relative rounded-md border-b-[1rem] border-t-[1rem] border-primary bg-white px-4 py-6 shadow-md md:px-8">
-      <div className="container mx-auto">
+    <div className="overflow-hidden relative bg-secondary text-secondary-foreground relative border-b-[2px] border-t-[2px] border-secondary-foreground px-4 py-6 md:px-8">
+      <h2 className="text-2xl md:text-4xl font-logo text-secondary-foreground w-full text-center">We hope to see you soon!</h2>
+      <Icon name="curlyLeft" className="
+      text-primary 
+      absolute
+      bottom-[-5px] left-[16px]
+      md:left-[3rem]
+      rotate-[-30deg]
+      " />
+      <Icon name="curlyright" className="
+      text-primary absolute 
+      top-[40px] right-[12px] 
+      md:right-[3rem] md:top-[1rem]
+      rotate-[-40deg]" />
+      <div className="container mx-auto p-8">
         <form className="grid grid-cols-1 items-center gap-6 md:grid-cols-4">
           {/* Date Picker */}
           <div className="relative">
             <Popover>
               <PopoverTrigger asChild>
                 <Button
-                  variant="primary"
-                  className="flex h-10 w-full items-center justify-start rounded-md border pl-10 text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+                  variant="outline"
+                  className="flex h-10 w-full items-center justify-start rounded-md border-secondary-foreground focus:outline-none focus:ring-secondary-foreground"
                 >
-                  <CalendarIcon className="absolute left-3 h-5 w-5 text-primary" />
+                  <CalendarIcon className="h-5 w-5 mr-[1rem]" />
                   {date ? (
                     date.toLocaleDateString('en-US', {
                       month: 'long',
@@ -53,12 +68,12 @@ export const ReservationForm = () => {
                       year: 'numeric'
                     })
                   ) : (
-                    <span className="text-muted-foreground">Select a date</span>
+                    <span>Select a date</span>
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-2">
-                <Calendar mode="single" selected={date} onSelect={setDate} />
+              <PopoverContent className="w-auto p-2 bg-secondary text-secondary-foreground">
+                <Calendar mode="single" selected={date} onSelect={setDate} className="bg-secondary" />
               </PopoverContent>
             </Popover>
           </div>
@@ -66,8 +81,8 @@ export const ReservationForm = () => {
           {/* Time Selector */}
           <div className="relative">
             <Select onValueChange={(value) => setTime(value)} value={time}>
-              <SelectTrigger className="flex h-10 w-full items-center justify-start rounded-md border pl-10 text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary">
-                <Clock className="absolute left-3 h-5 w-5 text-primary" />
+              <SelectTrigger className="flex h-10 w-full items-center justify-start rounded-md border-secondary-foreground pl-10 placeholder-gray-400 focus:outline-none focus:ring-secondary-foreground">
+                <Clock className="absolute left-3 h-5 w-5" />
                 <SelectValue placeholder="Select a time" />
               </SelectTrigger>
               <SelectContent>
@@ -83,8 +98,8 @@ export const ReservationForm = () => {
           {/* Guests Selector */}
           <div className="relative">
             <Select onValueChange={(value) => setGuests(value)} value={guests}>
-              <SelectTrigger className="flex h-10 w-full items-center justify-start rounded-md border pl-10 text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary">
-                <Users className="absolute left-3 h-5 w-5 text-primary" />
+              <SelectTrigger className="flex h-10 w-full items-center justify-start rounded-md border-secondary-foreground pl-10 placeholder-gray-400 focus:outline-none focus:ring-secondary-foreground">
+                <Users className="absolute left-3 h-5 w-5" />
                 <SelectValue placeholder="Select guests" />
               </SelectTrigger>
               <SelectContent>
@@ -101,9 +116,13 @@ export const ReservationForm = () => {
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-center md:justify-end">
-            <Button className="hover:bg-primary-dark w-full rounded-md bg-primary px-6 py-3 text-white shadow-md md:w-auto">
-              Book Now
+          <div className="flex justify-center">
+            <Button variant="" className="
+              rounded-md px-6 py-3 w-full h-[40px]
+              bg-secondary text-secondary-foreground 
+              border-secondary-foreground border-[1px]
+              hover:bg-secondary/85 hover:shadow-lg">
+              Book Now <MoveRight className="h-4 w-4 ml-[1rem]" />
             </Button>
           </div>
         </form>

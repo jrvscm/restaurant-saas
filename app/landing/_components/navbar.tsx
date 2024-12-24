@@ -3,13 +3,11 @@
 import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger
 } from '@/components/ui/navigation-menu';
-import { Menu, MoveRight, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
@@ -53,55 +51,20 @@ export const Navbar = () => {
 
   return (
     <header
-      className={`fixed left-0 top-0 z-40 w-full transition-all duration-300 ${
-        isScrolled ? 'py-2' : 'py-4'
+      className={`fixed left-0 top-0 z-40 w-full transition-all duration-300 border-b border-primary ${
+        isScrolled ? 'py-2 bg-black/60 backdrop-blur-2xl' : 'py-4'
       }`}
     >
-      <div className="container relative mx-auto flex items-center justify-between gap-4">
+      <div className={`container relative mx-auto flex items-center justify-between gap-4`}>
         {/* Navigation Menu */}
         <div className="hidden gap-4 lg:flex">
           <NavigationMenu>
             <NavigationMenuList className="flex gap-4">
               {navigationItems.map((item) => (
                 <NavigationMenuItem key={item.title}>
-                  {item.href ? (
-                    <NavigationMenuLink>
-                      <Button variant="ghost">{item.title}</Button>
-                    </NavigationMenuLink>
-                  ) : (
-                    <>
-                      <NavigationMenuTrigger className="text-sm font-medium">
-                        {item.title}
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent className="!w-[450px] p-4">
-                        <div className="flex grid-cols-2 flex-col gap-4 lg:grid">
-                          <div className="flex h-full flex-col justify-between">
-                            <div className="flex flex-col">
-                              <p className="text-base">{item.title}</p>
-                              <p className="text-sm text-muted-foreground">
-                                {item.description}
-                              </p>
-                            </div>
-                            <Button size="sm" className="mt-10">
-                              Book a call today
-                            </Button>
-                          </div>
-                          <div className="flex h-full flex-col justify-end text-sm">
-                            {item.items?.map((subItem) => (
-                              <NavigationMenuLink
-                                href={subItem.href}
-                                key={subItem.title}
-                                className="flex flex-row items-center justify-between rounded px-4 py-2 hover:bg-muted"
-                              >
-                                <span>{subItem.title}</span>
-                                <MoveRight className="h-4 w-4 text-muted-foreground" />
-                              </NavigationMenuLink>
-                            ))}
-                          </div>
-                        </div>
-                      </NavigationMenuContent>
-                    </>
-                  )}
+                  <NavigationMenuLink>
+                    <Button variant="ghostMuted">{item.title}</Button>
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
               ))}
             </NavigationMenuList>
@@ -124,13 +87,13 @@ export const Navbar = () => {
         {/* Right Buttons */}
         <div className="flex justify-end gap-4">
           <Button
-            variant="ghost"
+            variant="ghostMuted"
             className="hidden md:inline"
             asChild // Allows Button to inherit the behavior of the wrapped element
           >
             <a href="tel:+13073631743">(307) 363-1PIE</a>
           </Button>
-          <Button variant="outline">Sign in</Button>
+          <Button variant="ghostMuted">Sign in</Button>
           <Button>Get Started</Button>
         </div>
 

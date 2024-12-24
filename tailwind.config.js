@@ -17,56 +17,53 @@ module.exports = {
       }
     },
     extend: {
+      clipPath: {
+        ribbon: 'polygon(0 0, 100% 50%, 0 100%)'
+      },
       backgroundImage: {
-        // Add gradient overlay to hero image
+        'paper-texture': "url('//images.ctfassets.net/dho5s3z0t7k5/0z8Sw6prWk65vrMaXWdFw/e82e4fc5b3762ad161a872eccd8dba50/olga-thelavart-HZm2XR0whdw-unsplash.jpg')",
         'hero-image':
           "linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2)), url('//images.ctfassets.net/dho5s3z0t7k5/4NMGvilLFqsQLLtLsNrKg6/27d2a971e5712bc687782898beadc22b/klara-kulikova-5eoiyhGLFb4-unsplash.jpg')",
         'menu-image':
-          "linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)), url('//images.ctfassets.net/dho5s3z0t7k5/21zZ3F5jT2BqJg1zKaZNuJ/cd1946df5796f9d743dd80d07af22a43/ivan-torres-MQUqbmszGGM-unsplash.jpg')"
+          "linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2)), url('//images.ctfassets.net/dho5s3z0t7k5/21zZ3F5jT2BqJg1zKaZNuJ/cd1946df5796f9d743dd80d07af22a43/ivan-torres-MQUqbmszGGM-unsplash.jpg')"
       },
       fontFamily: {
-        logo: ['"Fredericka the Great"', 'serif'] // Add your Google Font here
+        logo: ['"Fredericka the Great"', 'serif']
       },
       colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        background: 'hsl(45, 85%, 97%)', // Light Cream Background
+        foreground: 'hsl(0, 0%, 15%)', // Dark Neutral for Text
+        border: 'hsl(45, 85%, 80%)', // Subtle Gold Borders
         primary: {
-          DEFAULT: 'hsl(10, 72%, 50%)', // Updated to match #D63920 (Bright red)
-          foreground: 'hsl(0, 0%, 100%)' // White text on primary
+          DEFAULT: 'hsl(10, 72%, 50%)', // Pizza Sauce Red
+          foreground: 'hsl(0, 0%, 100%)' // White on Primary
         },
         secondary: {
-          DEFAULT: 'hsl(45, 85%, 80%)', // Updated to match #F4DCAE (Beige)
-          foreground: 'hsl(0, 0%, 10%)' // Dark text on secondary
-        },
-        destructive: {
-          DEFAULT: 'hsl(0, 60%, 50%)', // Use for alerts (unchanged if not needed)
-          foreground: 'hsl(0, 0%, 100%)'
-        },
-        muted: {
-          DEFAULT: 'hsl(240, 10%, 90%)', // Light neutral tone
-          foreground: 'hsl(240, 10%, 30%)'
+          DEFAULT: 'hsl(45, 85%, 57%)', // Golden Crust Yellow
+          foreground: 'hsl(0, 0%, 10%)' // Dark Text on Secondary
         },
         accent: {
-          DEFAULT: 'hsl(10, 72%, 40%)', // Darker red for accents
+          DEFAULT: 'hsl(120, 60%, 38%)', // Basil Green
+          foreground: 'hsl(0, 0%, 100%)' // White on Accent
+        },
+        muted: {
+          DEFAULT: 'hsl(0, 0%, 90%)', // Light Neutral
+          foreground: 'hsl(0, 0%, 40%)' // Gray Text
+        },
+        destructive: {
+          DEFAULT: 'hsl(0, 60%, 50%)', // Alerts and Errors
           foreground: 'hsl(0, 0%, 100%)'
         },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))'
-        },
         card: {
-          DEFAULT: 'hsl(240, 10%, 95%)', // Neutral light background
-          foreground: 'hsl(240, 10%, 20%)'
+          DEFAULT: 'hsl(45, 85%, 95%)', // Light Card Background
+          foreground: 'hsl(0, 0%, 20%)' // Darker Card Text
         },
         sidebar: {
-          DEFAULT: 'hsl(0, 0%, 10%)', // Dark gray
-          foreground: 'hsl(0, 0%, 100%)', // White text
-          primary: 'hsl(10, 72%, 50%)',
+          DEFAULT: 'hsl(0, 0%, 10%)', // Dark Gray Sidebar
+          foreground: 'hsl(0, 0%, 100%)', // White Text
+          primary: 'hsl(10, 72%, 50%)', // Pizza Sauce Red
           'primary-foreground': 'hsl(0, 0%, 100%)',
-          accent: 'hsl(45, 85%, 80%)',
+          accent: 'hsl(45, 85%, 57%)', // Golden Yellow
           'accent-foreground': 'hsl(0, 0%, 10%)',
           border: 'hsl(0, 0%, 20%)',
           ring: 'hsl(0, 0%, 40%)'

@@ -1,7 +1,36 @@
-import React from 'react';
+
+'use client'
+
+import React, { useEffect, useRef, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { Icon } from '@/components/custom-icons';
+import { ReservationForm } from './reservation-form';
 
 export const Menu = () => {
+  const menuSectionRef = useRef(null);
+  const [isSticky, setIsSticky] = useState(false);
+
+  useEffect(() => {
+    
+    const handleScroll = () => {
+      const menuSection = menuSectionRef.current;
+      if (!menuSection) return;
+
+      const menuTop = menuSection.getBoundingClientRect().top;
+      const menuBottom = menuSection.getBoundingClientRect().bottom;
+
+      if (menuTop <= 0 && menuBottom > 0) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const menuData = {
     appetizers: [
       {
@@ -33,10 +62,7 @@ export const Menu = () => {
         name: 'Wood-Fired Wings',
         description:
           'Choose one of our house-made dry rubs or sauces: Dry Rub, Dill Pickle Dry Rub, Carrello Buffalo Sauce, Our house-made BBQ sauce, or Chipotle Raspberry sauce.',
-        sizes: [
-          { size: 'Half Order', price: 12 },
-          { size: 'Full Order', price: 18 }
-        ]
+        price: { personal: 12, family: 18 },
       },
       {
         name: 'Caprese Salad',
@@ -149,6 +175,8 @@ export const Menu = () => {
     pizzas: [
       {
         name: 'Classic Cheese',
+        description:
+        'Our classic rendition.',
         price: { personal: 7, family: 13 }
       },
       {
@@ -210,130 +238,188 @@ export const Menu = () => {
     ]
   };
 
-  return (
-    <section className="relative min-h-screen w-full bg-menu-image bg-cover bg-center">
-      {/* Background Overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+  const categoryInfo = {
+    appetizers: {
+      description: 'Start your meal off right with our delicious appetizers!',
+    },
+    stuffed_pita_wraps: {
+      description: 'Ask for a house-made pickle for an additional $.50!'
+    },
+    wood_fired_pastas: {
+      description: 'We make our own rotini noodles from scratch daily with 100% semolina flour! All pastas are served with a side of our focaccia bread.'
+    },
+    rice_bowls: {
+    },
+    desserts: {
+    },
+    pizzas: {
+      description: '9” Gluten Free crust available, add $3.\n9" Personal Size / 14" Family Size.\nHalf & half pizzas are priced as two small pizzas.',
+    },
+  };
 
-      <div className="relative z-10 mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8 text-center">
+  return (
+    <section ref={menuSectionRef} className="relative min-h-screen w-full">
+      {/* Reservation Bar */}
+      <div className="w-full">
+        <ReservationForm />
+      </div>
+      <div className={`relative z-10 mx-auto`}>
+        <div className={`pb-8 pt-8 text-center bg-gray-600 ${isSticky ? 'fixed top-[64px] right-0 left-0 z-20 shadow-md text-muted' : ''}`}>
           <h1 className="font-logo text-4xl font-bold text-white">Our Menu</h1>
           <p className="text-lg text-gray-200">
             Explore our handcrafted dishes made with the finest ingredients!
           </p>
         </div>
 
-        {/* Tabs */}
-        <Tabs className="w-full">
-          <TabsList className="mb-6 flex justify-center space-x-4">
-            {Object.keys(menuData).map((category) => (
-              <TabsTrigger
-                key={category}
-                value={category}
-                className="data-[state=active]:ribbon-tab relative px-6 py-2 text-lg font-semibold uppercase text-white transition-all hover:text-yellow-400 focus:outline-none data-[state=active]:bg-yellow-500"
-              >
-                {category.replace(/_/g, ' ').toUpperCase()}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-
-          {/* Render Menu Items */}
-          {Object.entries(menuData).map(([category, items]) => (
-            <TabsContent
-              key={category}
-              value={category}
-              className="animate-fade-in p-6"
-            >
-              <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                {items.map((item, index) => (
-                  <li
-                    key={index}
-                    className="rounded-lg border border-gray-200 bg-white p-6 shadow-md transition hover:shadow-lg"
-                  >
-                    <h3 className="font-logo text-xl font-bold text-black">
-                      {item.name}
-                    </h3>
-
-                    {/* Render Description */}
-                    {item.description && (
-                      <p className="mt-2 text-gray-600">{item.description}</p>
-                    )}
-
-                    {/* Render Price */}
-                    {typeof item.price === 'object' ? (
-                      <div className="mt-2">
-                        {Object.entries(item.price).map(([size, price]) => (
-                          <p key={size} className="text-sm text-gray-700">
-                            <span className="font-bold capitalize">
-                              {size}:
-                            </span>{' '}
-                            ${price}
+        {/* Tabs for larger screens */}
+        <div className={`hidden lg:block`}>
+          <Tabs className={`w-full`} defaultValue="appetizers">
+            <div className={`${
+              isSticky ? 'fixed top-[196px] left-0 right-0 z-20 bg-gray-900 shadow-md' : ''
+            }`}>
+              <TabsList className={`rounded-tr-none rounded-tl-none rounded-br-none rounded-bl-none flex justify-center space-x-2 bg-gray-900 shadow-md z-10`}>
+              {Object.keys(menuData).map((category) => (
+                <TabsTrigger
+                  key={category}
+                  value={category}
+                  className="z-10 relative px-6 py-3 text-lg font-bold text-white uppercase transition-all hover:bg-yellow-400 hover:text-black focus:outline-none data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
+                >
+                  {category.replace(/_/g, ' ').toUpperCase()}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            </div>
+            {Object.entries(menuData).map(([category, items]) => (
+              <TabsContent key={category} value={category} className="mt-0">
+                <div className="bg-paper-texture bg-center bg-cover p-6 mt-0">
+                  <div className="flex justify-evenly items-center px-6 py-6">
+                    <Icon name="pizzaSlice" className="text-primary" />
+                    <Icon name="pizza" className="text-primary" />
+                    <Icon name="pizzaSlice" className="text-primary" />
+                    <Icon name="pizza" className="text-primary" />
+                    <Icon name="pizzaSlice" className="text-primary" />
+                  </div>
+                  <p className="max-w-[85%] text-sm text-gray-700 whitespace-pre-line mb-6 mx-auto">{categoryInfo[category]?.description}</p>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 animate-fade-in max-w-[85%] mx-auto">
+                    {items.map((item, index) => (
+                      <li
+                        key={index}
+                        className={`p-6 flex justify-between border-black/50 border-b relative ${
+                          index < 2 ? 'border-t' : ''
+                        } ${index % 2 === 0 ? 'sm:border-r' : ''}`}
+                      >
+                        <div className="flex-grow max-w-[70%]">
+                          <h3 className="font-logo text-xl font-bold text-black">{item.name}</h3>
+                          {item.description && (
+                            <p className="text-sm mt-2 text-gray-600">{item.description}</p>
+                          )}
+                          {item.options && (
+                            <ul className="mt-4 space-y-2">
+                              {item.options.map((option, i) => (
+                                <li key={i} className="text-sm text-gray-600">
+                                  <span>{option.description}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                        <div
+                          className="w-32 flex-shrink-0 flex flex-col items-center justify-center border-l-4"
+                          style={{
+                            borderLeft: '4px double hsl(10, 72%, 50%)',
+                            minHeight: '100%',
+                          }}
+                        >
+                          <p className="text-lg font-semibold text-secondary-foreground text-center">
+                            {item.price
+                              ? typeof item.price === 'object'
+                                ? Object.values(item.price)
+                                    .map((price) => `$${price}`)
+                                    .join(' / ')
+                                : `$${item.price}`
+                              : item.options
+                              ? item.options.map((option) => `$${option.price || '-'}`).join(' / ')
+                              : 'Price unavailable'}
                           </p>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="mt-4 text-lg font-semibold text-yellow-500">
-                        {item?.price && `$${item.price}`}
-                      </p>
-                    )}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="flex justify-evenly items-center mt-12">
+                    <Icon name="pizza" className="text-primary" />
+                    <Icon name="pizzaSlice" className="text-primary" />
+                    <Icon name="pizza" className="text-primary" />
+                    <Icon name="pizzaSlice" className="text-primary" />
+                    <Icon name="pizza" className="text-primary" />
+                  </div>
+                </div>
+              </TabsContent>
+            ))}
+          </Tabs>
+        </div>
 
-                    {/* Render Options */}
-                    {item.options && (
-                      <ul className="mt-4 space-y-2">
-                        {item.options.map((option, i) => (
-                          <li
-                            key={i}
-                            className="flex justify-between text-sm text-gray-600"
-                          >
-                            <span>{option.description}</span>
-                            <span className="font-semibold text-yellow-500">
-                              {option?.price && `$${option.price}`}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {/* Render Add-ons */}
-                    {item.add_ons && (
-                      <ul className="mt-4 space-y-2">
-                        {item.add_ons.map((add_on, i) => (
-                          <li
-                            key={i}
-                            className="flex justify-between text-sm text-gray-600"
-                          >
-                            <span>{add_on.description}</span>
-                            {typeof add_on.price === 'object' ? (
-                              Object.entries(add_on.price).map(
-                                ([size, price]) => (
-                                  <span key={size} className="text-yellow-500">
-                                    {size}: ${price}
-                                  </span>
-                                )
-                              )
-                            ) : (
-                              <span className="font-semibold text-yellow-500">
-                                ${add_on.price}
-                              </span>
+        {/* Accordion for mobile */}
+        <div className="block lg:hidden">
+          <Accordion type="single" collapsible defaultValue="pizzas">
+            {Object.entries(menuData).map(([category, items]) => (
+              <AccordionItem key={category} value={category}>
+                <AccordionTrigger className="text-lg font-bold text-white uppercase bg-gray-900 px-4 py-2">
+                  {category.replace(/_/g, ' ').toUpperCase()}
+                </AccordionTrigger>
+                <AccordionContent className="pb-0">
+                  <div className="bg-paper-texture">
+                    <p className="text-sm text-gray-700 whitespace-pre-line mb-4 pl-4 pr-4 pt-4">
+                      {categoryInfo[category]?.description}
+                    </p>
+                    <ul className="grid grid-cols-1">
+                      {items.map((item, index) => (
+                        <li
+                          key={index}
+                          className="p-4 flex justify-between border-black/50 border-b"
+                        >
+                          <div className="flex-grow pr-4">
+                            <h3 className="font-logo text-xl font-bold text-black">{item.name}</h3>
+                            {item.description && (
+                              <p className="text-sm mt-2 text-gray-600">{item.description}</p>
                             )}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {/* Render Notes */}
-                    {item.notes && (
-                      <p className="mt-4 text-sm italic text-gray-500">
-                        {item.notes}
-                      </p>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </TabsContent>
-          ))}
-        </Tabs>
+                            {item.options && (
+                              <ul className="mt-4 space-y-2">
+                                {item.options.map((option, i) => (
+                                  <li key={i} className="text-sm text-gray-600">
+                                    <span>{option.description}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+                          <div
+                            className="w-24 flex-shrink-0 flex flex-col items-center justify-center border-l-4"
+                            style={{
+                              borderLeft: '4px double #FF4D4D',
+                              minHeight: '100%',
+                            }}
+                          >
+                            <p className="text-lg font-semibold text-yellow-500 text-center">
+                              {item.price
+                                ? typeof item.price === 'object'
+                                  ? Object.values(item.price)
+                                      .map((price) => `$${price}`)
+                                      .join(' / ')
+                                  : `$${item.price}`
+                                : item.options
+                                ? item.options.map((option) => `$${option.price || '-'}`).join(' / ')
+                                : 'Price unavailable'}
+                            </p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div> 
       </div>
     </section>
   );
