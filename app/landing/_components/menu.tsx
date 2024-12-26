@@ -424,7 +424,7 @@ export const Menu = () => {
         <div className="block w-full lg:hidden">
           <Accordion type="single" collapsible defaultValue="pizzas">
             {Object.entries(menuData).map(([category, items]) => (
-              <AccordionItem key={category} value={category}>
+              <AccordionItem key={category} value={category} className="border-b border-secondary">
                 <AccordionTrigger className="text-lg font-bold text-white uppercase bg-secondary-foreground px-4 py-2">
                   {category.replace(/_/g, ' ').toUpperCase()}
                 </AccordionTrigger>
