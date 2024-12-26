@@ -31,7 +31,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${lato.className}`}
+      className={`${lato.className} bg-secondary`}
       suppressHydrationWarning={true}
     >
       <body className={''}>

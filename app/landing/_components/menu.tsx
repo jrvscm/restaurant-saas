@@ -273,6 +273,7 @@ export const Menu = () => {
         "
       >
         <Icon name="ribbon" className="
+          animate-fade-in
           block absolute top-[40px] md:top-[80px] left-0 
           h-auto md:h-[30%] 
           w-[80%] md:w-auto
