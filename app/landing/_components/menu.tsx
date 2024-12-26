@@ -335,17 +335,17 @@ export const Menu = () => {
               <TabsList className={`rounded-tr-none rounded-tl-none rounded-br-none rounded-bl-none flex justify-center space-x-2 bg-secondary-foreground shadow-md z-10`}>
               {Object.keys(menuData).map((category) => (
                 <TabsTrigger
-                  key={category}
-                  value={category}
-                  className="
+                key={category}
+                value={category}
+                className="
                   z-10 relative px-6 py-3 text-lg font-bold text-white uppercase transition-all 
-                  hover:bg-secondary hover:text-secondary-foreground hover:border hover:border-secondary-foreground focus:outline-none hover:shadow-md
+                  hover:bg-secondary hover:text-secondary-foreground border border-transparent hover:border-secondary-foreground focus:outline-none hover:shadow-md
                   data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground data-[state=active]:shadow-md
                   data-[state=active]:border data-[state=active]:border-secondary-foreground
-                  "
-                >
-                  {category.replace(/_/g, ' ').toUpperCase()}
-                </TabsTrigger>
+                "
+              >
+                {category.replace(/_/g, ' ').toUpperCase()}
+              </TabsTrigger>
               ))}
             </TabsList>
             </div>
