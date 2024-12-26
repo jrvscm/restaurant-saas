@@ -53,7 +53,7 @@ export const Hero = () => {
                 </div>
               </div>
 
-              {/* Yello Container */}
+              {/* Yellow Container */}
               <div
                 className="
                     order-1
@@ -70,7 +70,7 @@ export const Hero = () => {
                 <h2 className="text-center font-logo text-2xl font-semibold text-secondary-foreground">
                   Give the Gift of Pizza!
                 </h2>
-                <p className="hidden rounded-md py-2 text-center font-serif text-sm leading-relaxed tracking-tight md:block md:text-base lg:text-lg text-secondary-foreground">
+                <p className="hidden rounded-md py-2 text-center font-serif text-base leading-relaxed tracking-tight md:block md:text-base lg:text-lg text-secondary-foreground">
                   Treat your friends and family to the perfect gift. Purchase a
                   Pizza Carrello gift card today and make someone's day extra
                   special!

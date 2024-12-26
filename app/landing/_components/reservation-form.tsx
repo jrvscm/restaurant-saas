@@ -36,18 +36,18 @@ export const ReservationForm = () => {
   ];
 
   return (
-    <div className="overflow-hidden relative bg-secondary text-secondary-foreground relative border-b-[2px] border-t-[2px] border-secondary-foreground px-4 py-6 md:px-8">
+    <div className="overflow-hidden relative bg-secondary text-secondary-foreground relative border-b-[2px] border-t-[2px] border-secondary-foreground px-4 py-6 md:px-8 w-[100vw]">
       <h2 className="text-2xl md:text-4xl font-logo text-secondary-foreground w-full text-center">We hope to see you soon!</h2>
       <Icon name="curlyLeft" className="
       text-primary 
       absolute
-      bottom-[-5px] left-[16px]
+      bottom-[-5px] left-[24px]
       md:left-[3rem]
       rotate-[-30deg]
       " />
       <Icon name="curlyright" className="
       text-primary absolute 
-      top-[40px] right-[12px] 
+      top-[40px] right-[24px] 
       md:right-[3rem] md:top-[1rem]
       rotate-[-40deg]" />
       <div className="container mx-auto p-8">

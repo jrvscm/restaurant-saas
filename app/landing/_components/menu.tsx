@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { Icon } from '@/components/custom-icons';
 import { ReservationForm } from './reservation-form';
+import { Button } from '@/components/ui/button';
 
 export const Menu = () => {
   const menuSectionRef = useRef(null);
@@ -129,49 +130,6 @@ export const Menu = () => {
         price: 10
       }
     ],
-    wood_fired_pastas: [
-      {
-        name: 'Pesto Chicken',
-        description:
-          'Fresh pasta, pesto cream sauce, wood-fired chicken, tomatoes, spinach and Parmigiana Reggiano.',
-        price: 16
-      },
-      {
-        name: 'Ragu',
-        description:
-          'Fresh pasta with a tomato-based wine sauce, sausage, and parmesan.',
-        price: 16,
-        notes: 'Make it VEGETARIAN or VEGAN!'
-      },
-      {
-        name: 'Pasta Pepperoncini',
-        description:
-          "Fresh pasta, cream, ricotta, pepperoncini, Daily's bacon, sausage, and shredded mozzarella.",
-        price: 17
-      },
-      {
-        name: 'Pasta Americana',
-        description:
-          'Fresh pasta in a light cream sauce, wood-fired chicken, bacon, tomatoes, our own ricotta & roasted lemon. Topped with Parmigiana Reggiano & basil.',
-        price: 17
-      }
-    ],
-    rice_bowls: [
-      {
-        name: 'Mediterranean Rice Bowl',
-        description:
-          'Spinach, mushrooms, peppers, onions, corn, all-white chicken, wood-fired with Jasmine rice and a zesty cream sauce.',
-        price: 12,
-        notes: 'Available VEGETARIAN or VEGAN.'
-      },
-      {
-        name: 'Pineapple Chipotle Rice Bowl',
-        description:
-          'Ham, peppers, onions, and pineapple, all wood-fired with Jasmine rice and a chipotle sour cream sauce. Topped with cilantro & lime.',
-        price: 12,
-        add_ons: [{ description: 'Add chicken', price: 1 }]
-      }
-    ],
     pizzas: [
       {
         name: 'Classic Cheese',
@@ -216,6 +174,49 @@ export const Menu = () => {
         ]
       }
     ],
+    wood_fired_pastas: [
+      {
+        name: 'Pesto Chicken',
+        description:
+          'Fresh pasta, pesto cream sauce, wood-fired chicken, tomatoes, spinach and Parmigiana Reggiano.',
+        price: 16
+      },
+      {
+        name: 'Ragu',
+        description:
+          'Fresh pasta with a tomato-based wine sauce, sausage, and parmesan.',
+        price: 16,
+        notes: 'Make it VEGETARIAN or VEGAN!'
+      },
+      {
+        name: 'Pasta Pepperoncini',
+        description:
+          "Fresh pasta, cream, ricotta, pepperoncini, Daily's bacon, sausage, and shredded mozzarella.",
+        price: 17
+      },
+      {
+        name: 'Pasta Americana',
+        description:
+          'Fresh pasta in a light cream sauce, wood-fired chicken, bacon, tomatoes, our own ricotta & roasted lemon. Topped with Parmigiana Reggiano & basil.',
+        price: 17
+      }
+    ],
+    rice_bowls: [
+      {
+        name: 'Mediterranean Rice Bowl',
+        description:
+          'Spinach, mushrooms, peppers, onions, corn, all-white chicken, wood-fired with Jasmine rice and a zesty cream sauce.',
+        price: 12,
+        notes: 'Available VEGETARIAN or VEGAN.'
+      },
+      {
+        name: 'Pineapple Chipotle Rice Bowl',
+        description:
+          'Ham, peppers, onions, and pineapple, all wood-fired with Jasmine rice and a chipotle sour cream sauce. Topped with cilantro & lime.',
+        price: 12,
+        add_ons: [{ description: 'Add chicken', price: 1 }]
+      }
+    ],
     desserts: [
       {
         name: 'Tiramisu',
@@ -258,31 +259,90 @@ export const Menu = () => {
   };
 
   return (
-    <section ref={menuSectionRef} className="relative min-h-screen w-full">
+    <section className="relative min-h-screen w-full">
       {/* Reservation Bar */}
       <div className="w-full">
         <ReservationForm />
       </div>
-      <div className={`relative z-10 mx-auto`}>
-        <div className={`pb-8 pt-8 text-center bg-gray-600 ${isSticky ? 'fixed top-[64px] right-0 left-0 z-20 shadow-md text-muted' : ''}`}>
-          <h1 className="font-logo text-4xl font-bold text-white">Our Menu</h1>
-          <p className="text-lg text-gray-200">
+
+      <div className="
+        relative min-h-[50vh] md:min-h-[80vh] 
+        bg-rewards-image bg-center bg-cover 
+        h-full
+        flex flex-col items-center justify-center
+        "
+      >
+        <Icon name="ribbon" className="
+          block absolute top-[40px] md:top-[80px] left-0 
+          h-auto md:h-[30%] 
+          w-[80%] md:w-auto
+        " />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 min-h-[50vh] md:min-h-[80vh]">
+          <div className="w-full bg-black/75 md:bg-transparent min-h-[19vh]">
+          </div>
+
+          <div className="
+            animate-fade-in 
+            flex flex-col gap-8 items-center justify-center
+            rounded-md bg-black/75 px-8 pt-8 pb-16
+            text-white rounded-none md:rounded-md md:py-12 lg:px-16 lg:py-16">
+            <Icon name="pizza" className="text-secondary" />
+            <h2 className="font-logo text-2xl md:text-3xl text-center">Sign up for our rewards program!</h2>
+            <p className="font-serif text-base md:text-xl text-center">
+              Sign up for our rewards program and get exclusive offers and discounts.
+              For every $1 dollar you spend, earn 5 rewards points that you can redeem
+              for items in our store!
+            </p>
+            <Button className="
+              w-full md:w-[200px]
+              bg-secondary text-secondary-foreground 
+              hover:text-secondary-foreground hover:bg-secondary/80
+            ">Sign Up!</Button>
+          </div>
+        </div>
+      </div>
+
+
+      <div ref={menuSectionRef} className={`relative z-10 mx-auto`}>
+        <div className={`relative pb-8 pt-8 text-center bg-gray-600 bg-secondary
+          ${isSticky ? 'static lg:fixed lg:top-[64px] right-0 left-0 z-20 shadow-md' : ''}
+        `}>
+          <Icon name="curlyLeft" className="
+            text-primary 
+            absolute
+            bottom-[-5px] left-[24px]
+            md:left-[3rem]
+            rotate-[-30deg]
+            " />
+          <Icon name="curlyright" className="
+            text-primary absolute 
+            top-[10px] right-[24px] 
+            md:right-[3rem] md:top-[1rem]
+            rotate-[-40deg]" />
+          <h1 className="font-logo text-4xl text-secondary-foreground pb-6">Our Menu</h1>
+          <p className="font-serif text-lg text-secondary-foreground">
             Explore our handcrafted dishes made with the finest ingredients!
           </p>
         </div>
 
         {/* Tabs for larger screens */}
         <div className={`hidden lg:block`}>
-          <Tabs className={`w-full`} defaultValue="appetizers">
+          <Tabs className={`w-full`} defaultValue="pizzas">
             <div className={`${
-              isSticky ? 'fixed top-[196px] left-0 right-0 z-20 bg-gray-900 shadow-md' : ''
+              isSticky ? 'fixed lg:top-[220px] left-0 right-0 z-20 text-secondary shadow-md' : ''
             }`}>
-              <TabsList className={`rounded-tr-none rounded-tl-none rounded-br-none rounded-bl-none flex justify-center space-x-2 bg-gray-900 shadow-md z-10`}>
+              <TabsList className={`rounded-tr-none rounded-tl-none rounded-br-none rounded-bl-none flex justify-center space-x-2 bg-secondary-foreground shadow-md z-10`}>
               {Object.keys(menuData).map((category) => (
                 <TabsTrigger
                   key={category}
                   value={category}
-                  className="z-10 relative px-6 py-3 text-lg font-bold text-white uppercase transition-all hover:bg-yellow-400 hover:text-black focus:outline-none data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
+                  className="
+                  z-10 relative px-6 py-3 text-lg font-bold text-white uppercase transition-all 
+                  hover:bg-secondary hover:text-secondary-foreground hover:border hover:border-secondary-foreground focus:outline-none hover:shadow-md
+                  data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground data-[state=active]:shadow-md
+                  data-[state=active]:border data-[state=active]:border-secondary-foreground
+                  "
                 >
                   {category.replace(/_/g, ' ').toUpperCase()}
                 </TabsTrigger>
@@ -290,7 +350,9 @@ export const Menu = () => {
             </TabsList>
             </div>
             {Object.entries(menuData).map(([category, items]) => (
-              <TabsContent key={category} value={category} className="mt-0">
+              <TabsContent key={category} value={category} className={`mt-0 ${
+                isSticky ? 'lg:pt-[192px]' : ''
+              }`}>
                 <div className="bg-paper-texture bg-center bg-cover p-6 mt-0">
                   <div className="flex justify-evenly items-center px-6 py-6">
                     <Icon name="pizzaSlice" className="text-primary" />
@@ -299,7 +361,7 @@ export const Menu = () => {
                     <Icon name="pizza" className="text-primary" />
                     <Icon name="pizzaSlice" className="text-primary" />
                   </div>
-                  <p className="max-w-[85%] text-sm text-gray-700 whitespace-pre-line mb-6 mx-auto">{categoryInfo[category]?.description}</p>
+                  <p className="max-w-[85%] text-lg text-gray-600 whitespace-pre-line mb-6 mx-auto">{categoryInfo[category]?.description}</p>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 animate-fade-in max-w-[85%] mx-auto">
                     {items.map((item, index) => (
                       <li
@@ -309,14 +371,14 @@ export const Menu = () => {
                         } ${index % 2 === 0 ? 'sm:border-r' : ''}`}
                       >
                         <div className="flex-grow max-w-[70%]">
-                          <h3 className="font-logo text-xl font-bold text-black">{item.name}</h3>
+                          <h3 className="font-logo text-2xl text-black">{item.name}</h3>
                           {item.description && (
-                            <p className="text-sm mt-2 text-gray-600">{item.description}</p>
+                            <p className="text-lg mt-2 text-gray-600">{item.description}</p>
                           )}
                           {item.options && (
                             <ul className="mt-4 space-y-2">
                               {item.options.map((option, i) => (
-                                <li key={i} className="text-sm text-gray-600">
+                                <li key={i} className="text-lg text-gray-600">
                                   <span>{option.description}</span>
                                 </li>
                               ))}
@@ -359,33 +421,33 @@ export const Menu = () => {
         </div>
 
         {/* Accordion for mobile */}
-        <div className="block lg:hidden">
+        <div className="block w-full lg:hidden">
           <Accordion type="single" collapsible defaultValue="pizzas">
             {Object.entries(menuData).map(([category, items]) => (
               <AccordionItem key={category} value={category}>
-                <AccordionTrigger className="text-lg font-bold text-white uppercase bg-gray-900 px-4 py-2">
+                <AccordionTrigger className="text-lg font-bold text-white uppercase bg-secondary-foreground px-4 py-2">
                   {category.replace(/_/g, ' ').toUpperCase()}
                 </AccordionTrigger>
                 <AccordionContent className="pb-0">
                   <div className="bg-paper-texture">
-                    <p className="text-sm text-gray-700 whitespace-pre-line mb-4 pl-4 pr-4 pt-4">
+                    <p className="text-base text-gray-600 whitespace-pre-line mb-4 pl-4 pr-4 pt-4">
                       {categoryInfo[category]?.description}
                     </p>
                     <ul className="grid grid-cols-1">
                       {items.map((item, index) => (
                         <li
                           key={index}
-                          className="p-4 flex justify-between border-black/50 border-b"
+                          className="p-4 flex justify-between border-secondary-foreground border-b"
                         >
                           <div className="flex-grow pr-4">
-                            <h3 className="font-logo text-xl font-bold text-black">{item.name}</h3>
+                            <h3 className="font-logo text-xl text-secondary-foreground">{item.name}</h3>
                             {item.description && (
-                              <p className="text-sm mt-2 text-gray-600">{item.description}</p>
+                              <p className="text-base mt-2 text-gray-600">{item.description}</p>
                             )}
                             {item.options && (
                               <ul className="mt-4 space-y-2">
                                 {item.options.map((option, i) => (
-                                  <li key={i} className="text-sm text-gray-600">
+                                  <li key={i} className="text-base text-gray-600">
                                     <span>{option.description}</span>
                                   </li>
                                 ))}
@@ -395,11 +457,11 @@ export const Menu = () => {
                           <div
                             className="w-24 flex-shrink-0 flex flex-col items-center justify-center border-l-4"
                             style={{
-                              borderLeft: '4px double #FF4D4D',
+                              borderLeft: '4px double hsl(10, 72%, 50%)',
                               minHeight: '100%',
                             }}
                           >
-                            <p className="text-lg font-semibold text-yellow-500 text-center">
+                            <p className="text-base font-semibold text-secondary-foreground text-center">
                               {item.price
                                 ? typeof item.price === 'object'
                                   ? Object.values(item.price)
