@@ -285,8 +285,8 @@ export const Menu = () => {
           <div className="
             animate-fade-in 
             flex flex-col gap-8 items-center justify-center
-            rounded-md bg-black/75 px-8 pt-8 pb-16
-            text-white rounded-none md:rounded-md md:py-12 lg:px-16 lg:py-16">
+            bg-black/75 px-8 pt-8 pb-16
+            text-white md:py-12 lg:px-16 lg:py-16">
             <Icon name="pizza" className="text-secondary" />
             <h2 className="font-logo text-2xl md:text-3xl text-center">Sign up for our rewards program!</h2>
             <p className="font-serif text-base md:text-xl text-center">

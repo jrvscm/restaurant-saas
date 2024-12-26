@@ -58,7 +58,11 @@ export const ReservationForm = () => {
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  className="flex h-10 w-full items-center justify-start rounded-md border-secondary-foreground focus:outline-none focus:ring-secondary-foreground"
+                  className="
+                    flex h-10 w-full items-center justify-start rounded-md 
+                    border-secondary-foreground focus:outline-none focus:ring-secondary-foreground
+                    hover:bg-secondary/50 hover:shadow-md hover:text-secondary-foreground
+                  "
                 >
                   <CalendarIcon className="h-5 w-5 mr-[1rem]" />
                   {date ? (
@@ -72,8 +76,8 @@ export const ReservationForm = () => {
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-2 bg-secondary text-secondary-foreground">
-                <Calendar mode="single" selected={date} onSelect={setDate} className="bg-secondary" />
+              <PopoverContent className="w-auto p-2 bg-secondary-foreground text-primary-foreground">
+                <Calendar mode="single" selected={date} onSelect={setDate} className="bg-secondary-foreground" />
               </PopoverContent>
             </Popover>
           </div>
@@ -81,11 +85,15 @@ export const ReservationForm = () => {
           {/* Time Selector */}
           <div className="relative">
             <Select onValueChange={(value) => setTime(value)} value={time}>
-              <SelectTrigger className="flex h-10 w-full items-center justify-start rounded-md border-secondary-foreground pl-10 placeholder-gray-400 focus:outline-none focus:ring-secondary-foreground">
+              <SelectTrigger className="
+                flex h-10 w-full items-center justify-start rounded-md border-secondary-foreground pl-10 
+                focus:outline-none focus:ring-secondary-foreground
+                hover:shadow-md
+              ">
                 <Clock className="absolute left-3 h-5 w-5" />
                 <SelectValue placeholder="Select a time" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-secondary-foreground text-primary-foreground">
                 {availableTimes.map((time) => (
                   <SelectItem key={time} value={time}>
                     {time}
@@ -98,11 +106,15 @@ export const ReservationForm = () => {
           {/* Guests Selector */}
           <div className="relative">
             <Select onValueChange={(value) => setGuests(value)} value={guests}>
-              <SelectTrigger className="flex h-10 w-full items-center justify-start rounded-md border-secondary-foreground pl-10 placeholder-gray-400 focus:outline-none focus:ring-secondary-foreground">
+              <SelectTrigger className="
+                flex h-10 w-full items-center justify-start rounded-md border-secondary-foreground pl-10 placeholder-gray-400 
+                focus:outline-none focus:ring-secondary-foreground 
+                hover:shadow-md
+                ">
                 <Users className="absolute left-3 h-5 w-5" />
                 <SelectValue placeholder="Select guests" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-secondary-foreground text-primary-foreground">
                 {Array.from({ length: 9 }, (_, i) => (i + 1).toString()).map(
                   (guest) => (
                     <SelectItem key={guest} value={guest}>
