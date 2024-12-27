@@ -47,7 +47,7 @@ export const Hero = () => {
                   >
                     Menu <Pizza className="h-4 w-4" />
                   </Button>
-                  <Button size="lg" className="w-full gap-4 md:w-auto border-secondary text-secondary-foreground bg-secondary hover:bg-secondary/85 hover:text-secondary-foreground">
+                  <Button size="lg" className="w-full gap-4 md:w-auto border-secondary text-secondary-foreground bg-secondary hover:bg-secondary-95 hover:text-secondary-foreground">
                     Order Now <MoveRight className="h-4 w-4" />
                   </Button>
                 </div>
@@ -58,7 +58,7 @@ export const Hero = () => {
                 className="
                     order-1
                     flex animate-fade-in
-                    flex-col gap-4 rounded-bl-none rounded-br-none rounded-tl-md rounded-tr-md bg-secondary/95 px-8 py-8 
+                    flex-col gap-4 rounded-bl-none rounded-br-none rounded-tl-md rounded-tr-md bg-secondary-95 px-8 py-8 
                     md:order-2
                     md:rounded-bl-none md:rounded-br-md
                     md:rounded-tl-none md:rounded-tr-md 

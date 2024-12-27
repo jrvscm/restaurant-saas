@@ -1,3 +1,14 @@
+const { fontFamily } = require('tailwindcss/defaultTheme');
+
+function generateOpacityVariants(baseColor) {
+  const opacityVariants = {};
+  for (let i = 5; i <= 95; i += 5) {
+    opacityVariants[i] = `hsla(var(${baseColor}), ${i / 100})`; // Use `hsla` for opacity
+  }
+  console.log(opacityVariants);
+  return opacityVariants;
+}
+
 module.exports = {
   darkMode: ['class'],
   content: [
@@ -17,8 +28,62 @@ module.exports = {
       }
     },
     extend: {
-      clipPath: {
-        ribbon: 'polygon(0 0, 100% 50%, 0 100%)'
+      colors: {
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+          ...generateOpacityVariants('--primary')
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+          ...generateOpacityVariants('--secondary')
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+          ...generateOpacityVariants('--destructive')
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+          ...generateOpacityVariants('--muted')
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+          ...generateOpacityVariants('--accent')
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+          ...generateOpacityVariants('--card')
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+          ...generateOpacityVariants('--popover')
+        },
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))',
+          ...generateOpacityVariants('--sidebar-background')
+        }
+      },
+      fontFamily: {
+        sans: ['Lato', ...fontFamily.sans],
+        logo: ['"Fredericka the Great"', 'serif']
       },
       backgroundImage: {
         'rewards-image': "url('//images.ctfassets.net/dho5s3z0t7k5/6cGKHhsyrkWQR71LAuMjAW/0fdb2cec42b2e08de8958e9e0bb37632/nik-owens-40OJLYVWeeM-unsplash__1_.jpg')",
@@ -28,47 +93,8 @@ module.exports = {
         'menu-image':
           "linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2)), url('//images.ctfassets.net/dho5s3z0t7k5/21zZ3F5jT2BqJg1zKaZNuJ/cd1946df5796f9d743dd80d07af22a43/ivan-torres-MQUqbmszGGM-unsplash.jpg')"
       },
-      fontFamily: {
-        logo: ['"Fredericka the Great"', 'serif']
-      },
-      colors: {
-        background: 'hsl(45, 85%, 97%)', // Light Cream Background
-        foreground: 'hsl(0, 0%, 15%)', // Dark Neutral for Text
-        border: 'hsl(45, 85%, 80%)', // Subtle Gold Borders
-        primary: {
-          DEFAULT: 'hsl(10, 72%, 50%)', // Pizza Sauce Red
-          foreground: 'hsl(0, 0%, 100%)' // White on Primary
-        },
-        secondary: {
-          DEFAULT: 'hsl(45, 85%, 57%)', // Golden Crust Yellow
-          foreground: 'hsl(0, 0%, 10%)' // Dark Text on Secondary
-        },
-        accent: {
-          DEFAULT: 'hsl(120, 60%, 38%)', // Basil Green
-          foreground: 'hsl(0, 0%, 100%)' // White on Accent
-        },
-        muted: {
-          DEFAULT: 'hsl(0, 0%, 90%)', // Light Neutral
-          foreground: 'hsl(0, 0%, 40%)' // Gray Text
-        },
-        destructive: {
-          DEFAULT: 'hsl(0, 60%, 50%)', // Alerts and Errors
-          foreground: 'hsl(0, 0%, 100%)'
-        },
-        card: {
-          DEFAULT: 'hsl(45, 85%, 95%)', // Light Card Background
-          foreground: 'hsl(0, 0%, 20%)' // Darker Card Text
-        },
-        sidebar: {
-          DEFAULT: 'hsl(0, 0%, 10%)', // Dark Gray Sidebar
-          foreground: 'hsl(0, 0%, 100%)', // White Text
-          primary: 'hsl(10, 72%, 50%)', // Pizza Sauce Red
-          'primary-foreground': 'hsl(0, 0%, 100%)',
-          accent: 'hsl(45, 85%, 57%)', // Golden Yellow
-          'accent-foreground': 'hsl(0, 0%, 10%)',
-          border: 'hsl(0, 0%, 20%)',
-          ring: 'hsl(0, 0%, 40%)'
-        }
+      clipPath: {
+        ribbon: 'polygon(0 0, 100% 50%, 0 100%)'
       },
       borderRadius: {
         lg: 'var(--radius)',

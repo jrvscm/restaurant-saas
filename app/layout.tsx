@@ -4,12 +4,10 @@ import type { Metadata } from 'next';
 import { Lato } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 import './globals.css';
-import '@fontsource/fredericka-the-great';
-// import { usePathname } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: 'Next Shadcn',
-  description: 'Basic dashboard with Next.js and Shadcn'
+  title: 'Dynamic Theming Example',
+  description: 'Landing and Dashboard Theming with Middleware'
 };
 
 const lato = Lato({
@@ -18,21 +16,15 @@ const lato = Lato({
   display: 'swap'
 });
 
-export default async function RootLayout({
+export default function RootLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
 
-  // const isDashboard = pathname === '/dashboard'; // Check if the current route is '/dashboard'
-
   return (
-    <html
-      lang="en"
-      className={`${lato.className} bg-secondary`}
-      suppressHydrationWarning={true}
-    >
-      <body className={''}>
+    <html lang="en" className={lato.className} suppressHydrationWarning>
+      <body>
         <NextTopLoader showSpinner={false} />
         <Providers>
           <Toaster />

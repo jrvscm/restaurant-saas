@@ -298,7 +298,7 @@ export const Menu = () => {
             <Button className="
               w-full md:w-[200px]
               bg-secondary text-secondary-foreground 
-              hover:text-secondary-foreground hover:bg-secondary/80
+              hover:text-secondary-foreground hover:bg-secondary-95
             ">Sign Up!</Button>
           </div>
         </div>

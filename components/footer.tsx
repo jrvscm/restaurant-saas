@@ -21,7 +21,7 @@ export const Footer = () => {
             />
             <Button
               type="submit"
-              className="px-6 py-3 h-[48px] w-full sm:w-auto hover:bg-secondary/80 bg-secondary text-secondary-foreground"
+              className="px-6 py-3 h-[48px] w-full sm:w-auto hover:bg-secondary-50 bg-secondary text-secondary-foreground"
             >
               Subscribe
             </Button>

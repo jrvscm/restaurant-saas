@@ -61,7 +61,7 @@ export const ReservationForm = () => {
                   className="
                     flex h-10 w-full items-center justify-start rounded-md 
                     border-secondary-foreground focus:outline-none focus:ring-secondary-foreground
-                    hover:bg-secondary/50 hover:shadow-md hover:text-secondary-foreground
+                    hover:bg-secondary-50 hover:shadow-md hover:text-secondary-foreground
                   "
                 >
                   <CalendarIcon className="h-5 w-5 mr-[1rem]" />
@@ -133,7 +133,7 @@ export const ReservationForm = () => {
               rounded-md px-6 py-3 w-full h-[40px]
               bg-secondary text-secondary-foreground 
               border-secondary-foreground border-[1px]
-              hover:bg-secondary/85 hover:shadow-lg">
+              hover:bg-secondary-50 hover:shadow-lg">
               Book Now <MoveRight className="h-4 w-4 ml-[1rem]" />
             </Button>
           </div>
