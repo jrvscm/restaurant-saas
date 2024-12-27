@@ -1,4 +1,3 @@
-import { auth } from '@/auth';
 import Providers from '@/components/layout/providers';
 import { Toaster } from '@/components/ui/sonner';
 import type { Metadata } from 'next';
@@ -24,7 +23,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
 
   // const isDashboard = pathname === '/dashboard'; // Check if the current route is '/dashboard'
 
@@ -36,7 +34,7 @@ export default async function RootLayout({
     >
       <body className={''}>
         <NextTopLoader showSpinner={false} />
-        <Providers session={session}>
+        <Providers>
           <Toaster />
           {children}
         </Providers>
