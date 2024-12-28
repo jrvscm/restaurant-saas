@@ -1,18 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export function decodeJwt(token: string) {
-  const base64Url = token.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  const jsonPayload = decodeURIComponent(
-    atob(base64)
-      .split('')
-      .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-      .join('')
-  );
-  return JSON.parse(jsonPayload);
+export function decodeJwt(token) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error('Failed to decode token:', error.message);
+    return null;
+  }
 }
 
-export function middleware(req: NextRequest) {
+export function middleware(req) {
   const token = req.cookies.get('token')?.value;
   const { pathname } = req.nextUrl;
 
@@ -23,44 +28,44 @@ export function middleware(req: NextRequest) {
   const response = NextResponse.next();
 
   if (token) {
-    try {
-      const decoded = decodeJwt(token);
+    const decoded = decodeJwt(token);
 
-      // Check token expiration
-      if (decoded.exp && decoded.exp * 1000 < Date.now()) {
-        if (isDashboardRoute || isVerificationRoute) {
-          return NextResponse.redirect(new URL('/signin', req.url));
-        }
-        return response;
-      }
-
-      // Redirect verified users away from /verification
-      if (isVerificationRoute && decoded.status === 'verified') {
-        return NextResponse.redirect(new URL('/dashboard', req.url));
-      }
-
-      // Redirect logged-in users from /signin
-      if (isSigninRoute) {
-        if (decoded.status === 'verified') {
-          return NextResponse.redirect(new URL('/dashboard', req.url));
-        } else {
-          return NextResponse.redirect(new URL('/verification', req.url));
-        }
-      }
-
-      // Attach session to the response
-      response.headers.set('X-Session', JSON.stringify(decoded));
-    } catch (error) {
-      console.error('Middleware Error:', error.message);
+    if (!decoded) {
+      console.error('Token is invalid. Redirecting to /signin.');
       if (isDashboardRoute || isVerificationRoute) {
         return NextResponse.redirect(new URL('/signin', req.url));
       }
+      return response; // Allow public routes
     }
+
+    // Redirect verified users away from /verification
+    if (isVerificationRoute && decoded.status === 'verified') {
+      return NextResponse.redirect(new URL('/dashboard', req.url));
+    }
+
+    // Redirect logged-in users from /signin
+    if (isSigninRoute) {
+      if (decoded.status === 'verified') {
+        return NextResponse.redirect(new URL('/dashboard', req.url));
+      } else {
+        return NextResponse.redirect(new URL('/verification', req.url));
+      }
+    }
+
+    // Redirect unverified users from /dashboard to /verification
+    if (isDashboardRoute && decoded.status !== 'verified') {
+      return NextResponse.redirect(new URL('/verification', req.url));
+    }
+
+    // Attach the encoded token to the response headers
+    response.headers.set('X-Session', JSON.stringify({ token })); // Include raw token
   }
 
   // If not authenticated and trying to access dashboard or verification
-  if (!token && (isDashboardRoute || isVerificationRoute)) {
-    return NextResponse.redirect(new URL('/signin', req.url));
+  if (!token) {
+    if (isDashboardRoute || isVerificationRoute) {
+      return NextResponse.redirect(new URL('/signin', req.url));
+    }
   }
 
   return response;
