@@ -34,14 +34,18 @@ export function middleware(req: NextRequest) {
         return response;
       }
 
-      // Redirect logged-in users away from `/signin`
-      if (isSigninRoute) {
+      // Redirect verified users away from /verification
+      if (isVerificationRoute && decoded.status === 'verified') {
         return NextResponse.redirect(new URL('/dashboard', req.url));
       }
 
-      // Redirect verified users away from `/verification`
-      if (isVerificationRoute && decoded.status === 'verified') {
-        return NextResponse.redirect(new URL('/dashboard', req.url));
+      // Redirect logged-in users from /signin
+      if (isSigninRoute) {
+        if (decoded.status === 'verified') {
+          return NextResponse.redirect(new URL('/dashboard', req.url));
+        } else {
+          return NextResponse.redirect(new URL('/verification', req.url));
+        }
       }
 
       // Attach session to the response
@@ -52,11 +56,11 @@ export function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL('/signin', req.url));
       }
     }
-  } else {
-    // Redirect unauthenticated users away from `/dashboard` or `/verification`
-    if (isDashboardRoute || isVerificationRoute) {
-      return NextResponse.redirect(new URL('/signin', req.url));
-    }
+  }
+
+  // If not authenticated and trying to access dashboard or verification
+  if (!token && (isDashboardRoute || isVerificationRoute)) {
+    return NextResponse.redirect(new URL('/signin', req.url));
   }
 
   return response;
