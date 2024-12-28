@@ -1,21 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-
-export function decodeJwt(token) {
-  try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join('')
-    );
-    return JSON.parse(jsonPayload);
-  } catch (error) {
-    console.error('Failed to decode token:', error.message);
-    return null;
-  }
-}
+import { NextResponse } from 'next/server';
+import { decodeJwt } from './lib/utils';
 
 export function middleware(req) {
   const token = req.cookies.get('token')?.value;
@@ -72,5 +56,5 @@ export function middleware(req) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/verification', '/signin'], // Apply to relevant routes
+  matcher: ['/dashboard/:path*', '/verification', '/signin'] // Apply to relevant routes
 };

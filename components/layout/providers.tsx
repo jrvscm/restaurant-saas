@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import ThemeProvider from './ThemeToggle/theme-provider';
-import { SessionProvider, SessionProviderProps } from 'next-auth/react';
 
 export default function Providers({
   session,
@@ -17,16 +16,17 @@ export default function Providers({
   useEffect(() => {
     const isDashboard = pathname?.startsWith('/dashboard');
     const isVerification = pathname === '/verification';
-    const theme = isDashboard || isVerification ? 'theme-dashboard dark' : 'theme-landing';
+    const theme =
+      isDashboard || isVerification ? 'theme-dashboard dark' : 'theme-landing';
     document.documentElement.className = theme;
     setMounted(true);
   }, [pathname]);
 
-  if(!mounted) return null
+  if (!mounted) return null;
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <SessionProvider session={session}>{children}</SessionProvider>
+      {children}
     </ThemeProvider>
   );
 }

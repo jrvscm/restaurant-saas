@@ -39,7 +39,7 @@ import {
   GalleryVerticalEnd,
   LogOut
 } from 'lucide-react';
-import { useSession } from 'next-auth/react';
+import { useSession } from '@/hooks/use-session';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as React from 'react';
@@ -52,7 +52,7 @@ export const company = {
 };
 
 export default function AppSidebar() {
-  const { data: session } = useSession();
+  const { session } = useSession();
   const pathname = usePathname();
 
   return (
