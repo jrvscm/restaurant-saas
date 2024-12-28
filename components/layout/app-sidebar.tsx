@@ -40,6 +40,7 @@ import {
   LogOut
 } from 'lucide-react';
 import { useSession } from '@/hooks/use-session';
+import { useLogout } from '@/hooks/use-logout';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as React from 'react';
@@ -54,6 +55,7 @@ export const company = {
 export default function AppSidebar() {
   const { session } = useSession();
   const pathname = usePathname();
+  const logout = useLogout();
 
   return (
     <Sidebar collapsible="icon">
@@ -203,7 +205,7 @@ export default function AppSidebar() {
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={logout}>
                   <LogOut />
                   Log out
                 </DropdownMenuItem>

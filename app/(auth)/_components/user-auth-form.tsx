@@ -17,71 +17,66 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-const formSchema = z.object({
-  organizationName: z.string().min(1, 'Organization name is required'),
-  fullName: z.string().min(1, 'Full name is required'),
+const loginSchema = z.object({
   email: z.string().email('Enter a valid email address'),
-  phone: z.string().regex(/^\d{10}$/, 'Enter a valid 10-digit phone number'),
   password: z.string().min(6, 'Password must be at least 6 characters long')
 });
 
-type UserFormValues = z.infer<typeof formSchema>;
+const signUpSchema = loginSchema.extend({
+  organizationName: z.string().min(1, 'Organization name is required'),
+  fullName: z.string().min(1, 'Full name is required'),
+  phone: z.string().regex(/^\d{10}$/, 'Enter a valid 10-digit phone number')
+});
 
-export default function SignupForm() {
+type LoginValues = z.infer<typeof loginSchema>;
+type SignUpValues = z.infer<typeof signUpSchema>;
+
+export default function UserAuthForm({ isSignUp }: { isSignUp: boolean }) {
   const router = useRouter();
   const [loading, startTransition] = useTransition();
 
-  const form = useForm<UserFormValues>({
+  const formSchema = isSignUp ? signUpSchema : loginSchema;
+
+  const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      organizationName: '',
-      fullName: '',
-      email: '',
-      phone: '',
-      password: ''
-    }
+    defaultValues: isSignUp
+      ? {
+          organizationName: '',
+          fullName: '',
+          email: '',
+          phone: '',
+          password: ''
+        }
+      : { email: '', password: '' }
   });
 
-  const onSubmit = async (data: UserFormValues) => {
+  const onSubmit = async (data: LoginValues | SignUpValues) => {
     startTransition(async () => {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register/organization`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include', // Send cookies with request
-            body: JSON.stringify(data)
-          }
-        );
+        const endpoint = isSignUp
+          ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register/organization`
+          : `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`;
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(data)
+        });
 
         if (!response.ok) {
-          // Parse the server error response
           const errorData = await response.json();
-
-          if (response.status === 400 && errorData?.errors) {
-            // Backend returned field-specific errors
-            for (const key in errorData.errors) {
-              form.setError(key as keyof UserFormValues, {
-                type: 'server',
-                message: errorData.errors[key]
-              });
-            }
-            throw new Error('Fix the highlighted errors');
-          }
-
-          // Handle generic server error
-          throw new Error(errorData.error || 'Failed to register');
+          throw new Error(errorData.error || 'Failed to authenticate');
         }
 
-        toast.success('Organization registered successfully!');
-        router.push('/dashboard'); // Redirect on success
+        toast.success(
+          isSignUp
+            ? 'Organization registered successfully!'
+            : 'Logged in successfully!'
+        );
+        router.push('/dashboard');
       } catch (error: any) {
-        if (error.message) {
-          toast.error(error.message);
-        } else {
-          toast.error('Something went wrong. Please try again later.');
-        }
+        toast.error(error.message || 'Something went wrong. Please try again.');
       }
     });
   };
@@ -89,42 +84,64 @@ export default function SignupForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
-        <FormField
-          control={form.control}
-          name="organizationName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Organization Name</FormLabel>
-              <FormControl>
-                <Input
-                  type="text"
-                  placeholder="Example Organization"
-                  disabled={loading}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="fullName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Full Name</FormLabel>
-              <FormControl>
-                <Input
-                  type="text"
-                  placeholder="John Doe"
-                  disabled={loading}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {isSignUp && (
+          <>
+            <FormField
+              control={form.control}
+              name="organizationName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Organization Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="Example Organization"
+                      disabled={loading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="fullName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="John Doe"
+                      disabled={loading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="tel"
+                      placeholder="1234567890"
+                      disabled={loading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
+        )}
         <FormField
           control={form.control}
           name="email"
@@ -135,24 +152,6 @@ export default function SignupForm() {
                 <Input
                   type="email"
                   placeholder="admin@example.com"
-                  disabled={loading}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Phone</FormLabel>
-              <FormControl>
-                <Input
-                  type="tel"
-                  placeholder="1234567890"
                   disabled={loading}
                   {...field}
                 />
@@ -180,7 +179,13 @@ export default function SignupForm() {
           )}
         />
         <Button disabled={loading} className="w-full" type="submit">
-          {loading ? 'Signing Up...' : 'Sign Up'}
+          {loading
+            ? isSignUp
+              ? 'Signing Up...'
+              : 'Logging In...'
+            : isSignUp
+            ? 'Sign Up'
+            : 'Log In'}
         </Button>
       </form>
     </Form>
