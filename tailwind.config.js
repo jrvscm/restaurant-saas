@@ -5,7 +5,6 @@ function generateOpacityVariants(baseColor) {
   for (let i = 5; i <= 95; i += 5) {
     opacityVariants[i] = `hsla(var(${baseColor}), ${i / 100})`; // Use `hsla` for opacity
   }
-  console.log(opacityVariants);
   return opacityVariants;
 }
 

@@ -5,6 +5,7 @@ import { Lato } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 import './globals.css';
 import '@fontsource/fredericka-the-great';
+import { headers } from 'next/headers';
 
 export const metadata: Metadata = {
   title: 'Dynamic Theming Example',
@@ -22,12 +23,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
+  const session = headers().get('X-Session'); // Get theme from middleware
   return (
-    <html lang="en" className={lato.className} suppressHydrationWarning>
+    <html lang="en" className={`${lato.className}`} suppressHydrationWarning>
       <body>
         <NextTopLoader showSpinner={false} />
-        <Providers>
+        <Providers session={session}>
           <Toaster />
           {children}
         </Providers>

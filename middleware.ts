@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export function decodeJwt(token) {
+export function decodeJwt(token: string) {
   const base64Url = token.split('.')[1];
   const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
   const jsonPayload = decodeURIComponent(
@@ -12,61 +12,56 @@ export function decodeJwt(token) {
   return JSON.parse(jsonPayload);
 }
 
-export function middleware(req) {
+export function middleware(req: NextRequest) {
   const token = req.cookies.get('token')?.value;
+  const { pathname } = req.nextUrl;
 
-  // Determine if the request is for the dashboard
-  const isDashboardRoute = req.nextUrl.pathname.startsWith('/dashboard');
-  const isVerificationRoute = req.nextUrl.pathname === '/verification';
+  const isDashboardRoute = pathname.startsWith('/dashboard');
+  const isVerificationRoute = pathname === '/verification';
+  const isSigninRoute = pathname === '/signin';
 
-  // Set theme headers for SSR
   const response = NextResponse.next();
-  response.headers.set('X-Theme', isDashboardRoute ? 'theme-dashboard' : 'theme-landing');
 
-  // Handle authentication logic
-  if (!token) {
-    if (isDashboardRoute) {
-      return NextResponse.redirect(new URL('/signin', req.url));
-    }
-    return response; // Allow public routes
-  }
+  if (token) {
+    try {
+      const decoded = decodeJwt(token);
 
-  try {
-    const decoded = decodeJwt(token);
-    if (!decoded) {
-      throw new Error('Failed to decode token');
-    }
+      // Check token expiration
+      if (decoded.exp && decoded.exp * 1000 < Date.now()) {
+        if (isDashboardRoute || isVerificationRoute) {
+          return NextResponse.redirect(new URL('/signin', req.url));
+        }
+        return response;
+      }
 
-    // Check if the token is expired
-    if (decoded.exp && decoded.exp * 1000 < Date.now()) {
-      if (isDashboardRoute) {
+      // Redirect logged-in users away from `/signin`
+      if (isSigninRoute) {
+        return NextResponse.redirect(new URL('/dashboard', req.url));
+      }
+
+      // Redirect verified users away from `/verification`
+      if (isVerificationRoute && decoded.status === 'verified') {
+        return NextResponse.redirect(new URL('/dashboard', req.url));
+      }
+
+      // Attach session to the response
+      response.headers.set('X-Session', JSON.stringify(decoded));
+    } catch (error) {
+      console.error('Middleware Error:', error.message);
+      if (isDashboardRoute || isVerificationRoute) {
         return NextResponse.redirect(new URL('/signin', req.url));
       }
-      return response; // Allow public routes
     }
-
-    // Check verification status
-    if (decoded.status !== 'verified') {
-      if (isDashboardRoute) {
-        return NextResponse.redirect(new URL('/verification', req.url));
-      }
-      return response; // Allow `/verification`
-    }
-
-    // Redirect verified users away from `/verification`
-    if (isVerificationRoute) {
-      return NextResponse.redirect(new URL('/dashboard', req.url));
-    }
-
-    return response;
-  } catch (err) {
-    if (isDashboardRoute) {
+  } else {
+    // Redirect unauthenticated users away from `/dashboard` or `/verification`
+    if (isDashboardRoute || isVerificationRoute) {
       return NextResponse.redirect(new URL('/signin', req.url));
     }
-    return response; // Allow public routes
   }
+
+  return response;
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/verification'], // Apply middleware to dashboard and verification routes
+  matcher: ['/dashboard/:path*', '/verification', '/signin'], // Apply to relevant routes
 };
