@@ -1,9 +1,13 @@
 import { headers } from 'next/headers';
+import { buttonVariants } from '@/components/ui/button';
 import { searchParamsCache } from '@/lib/searchparams';
 import PageContainer from '@/components/layout/page-container';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import ReservationTable from './reservation-tables';
+import Link from 'next/link';
+import { Plus } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 type TReservationListingPage = {};
 
@@ -22,24 +26,25 @@ export default async function ReservationListingPage({}: TReservationListingPage
   const filters = {
     page: page?.toString() || '',
     limit: pageLimit?.toString() || '',
-    ...(search && { search }),
+    ...(search && { search })
   };
 
-  const queryString = new URLSearchParams(filters as Record<string, string>).toString();
+  const queryString = new URLSearchParams(
+    filters as Record<string, string>
+  ).toString();
 
-  const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/reservation/reservations?${
-    queryString ? queryString + '&' : ''
-  }`;
-  console.log('Fetching reservations from:', apiUrl);
-  console.log('token', token)
+  const apiUrl = `${
+    process.env.NEXT_PUBLIC_API_BASE_URL
+  }/reservation/reservations?${queryString ? queryString + '&' : ''}`;
+
   const response = await fetch(apiUrl, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`, // Include token
+      Authorization: `Bearer ${token}` // Include token
     },
     credentials: 'include', // Include credentials like cookies
-    cache: 'no-store', // Ensure fresh data for each request
+    cache: 'no-store' // Ensure fresh data for each request
   });
 
   if (!response.ok) {
@@ -47,21 +52,28 @@ export default async function ReservationListingPage({}: TReservationListingPage
     console.error('Error fetching reservations:', {
       status: response.status,
       statusText: response.statusText,
-      error,
+      error
     });
     throw new Error(error.message || 'Failed to fetch reservations');
   }
 
   const data = await response.json();
-  console.log('Reservations data:', data);
 
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
-        <Heading
-          title={`Reservations (${data.length})`}
-          description="Manage reservations for your organization."
-        />
+        <div className="flex items-start justify-between">
+          <Heading
+            title={`Reservations (${data.length})`}
+            description="Manage reservations for your organization."
+          />
+          <Link
+            href={'/dashboard/reservation/new'}
+            className={cn(buttonVariants({ variant: 'default' }))}
+          >
+            <Plus className="mr-2 h-4 w-4" /> Add New
+          </Link>
+        </div>
         <Separator />
         <ReservationTable data={data} />
       </div>
