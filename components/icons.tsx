@@ -1,6 +1,7 @@
 import {
   AlertTriangle,
   ArrowRight,
+  Calendar,
   Check,
   ChevronLeft,
   ChevronRight,
@@ -13,6 +14,7 @@ import {
   Image,
   Laptop,
   LayoutDashboardIcon,
+  List,
   Loader2,
   LogIn,
   LucideIcon,
@@ -36,6 +38,8 @@ import {
 export type Icon = LucideIcon;
 
 export const Icons = {
+  calendar: Calendar,
+  list: List,
   dashboard: LayoutDashboardIcon,
   logo: Command,
   login: LogIn,

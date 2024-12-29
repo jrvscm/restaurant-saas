@@ -148,6 +148,27 @@ export const navItems: NavItem[] = [
     items: [] // No child items
   },
   {
+    title: 'Availability',
+    url: '/dashboard/availability',
+    icon: 'calendar',
+    shortcut: ['e', 'e'],
+    isActive: false,
+    items: [
+      {
+        title: 'Hours of Operation',
+        url: '/dashboard/availability/hours',
+        icon: 'userPen',
+        shortcut: ['x', 'x']
+      },
+      {
+        title: 'Settings',
+        shortcut: ['z', 'z'],
+        url: '/dashboard/availability/settings',
+        icon: 'login'
+      }
+    ] // No child items
+  },
+  {
     title: 'Reservations',
     url: '/dashboard/reservation',
     icon: 'user',
