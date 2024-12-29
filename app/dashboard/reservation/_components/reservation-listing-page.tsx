@@ -1,70 +1,104 @@
-import { headers } from 'next/headers';
-import { buttonVariants } from '@/components/ui/button';
-import { searchParamsCache } from '@/lib/searchparams';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { io, Socket } from 'socket.io-client';
 import PageContainer from '@/components/layout/page-container';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
-import ReservationTable from './reservation-tables';
+import { ReservationTableWithSocket } from './reservation-tables/reservation-table-socket';
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { buttonVariants } from '@/components/ui/button';
+import { useSession } from '@/hooks/use-session';
 
-type TReservationListingPage = {};
+type Reservation = {
+  id: string;
+  date: string;
+  time: string;
+  guests: number;
+  status: string;
+  notes?: string;
+};
 
-export default async function ReservationListingPage({}: TReservationListingPage) {
-  const page = searchParamsCache.get('page');
-  const search = searchParamsCache.get('q');
-  const pageLimit = searchParamsCache.get('limit');
-  const session = headers().get('X-Session');
-  const token = session ? JSON.parse(session)?.token : null;
+export default function ReservationListingPage() {
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const { session, loading } = useSession();
+  const [socket, setSocket] = useState<Socket | null>(null);
 
-  if (!token) {
-    console.error('Authorization token is missing.');
-    throw new Error('Failed to fetch reservations. Missing token.');
-  }
+  useEffect(() => {
+    if (!session || loading) return; // Wait for session to be available
 
-  const filters = {
-    page: page?.toString() || '',
-    limit: pageLimit?.toString() || '',
-    ...(search && { search })
-  };
-
-  const queryString = new URLSearchParams(
-    filters as Record<string, string>
-  ).toString();
-
-  const apiUrl = `${
-    process.env.NEXT_PUBLIC_API_BASE_URL
-  }/reservation/reservations?${queryString ? queryString + '&' : ''}`;
-
-  const response = await fetch(apiUrl, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}` // Include token
-    },
-    credentials: 'include', // Include credentials like cookies
-    cache: 'no-store' // Ensure fresh data for each request
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    console.error('Error fetching reservations:', {
-      status: response.status,
-      statusText: response.statusText,
-      error
+    const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
+      query: {
+        organizationId: session.user.organizationId || '' // Pass the organizationId from session
+      },
+      withCredentials: true
     });
-    throw new Error(error.message || 'Failed to fetch reservations');
-  }
 
-  const data = await response.json();
+    setSocket(socketInstance);
+
+    const fetchReservations = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/reservation/reservations`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${session.token}` // Pass token from session
+            },
+            credentials: 'include'
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch reservations');
+        }
+
+        const data: Reservation[] = await response.json();
+        setReservations(data);
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      }
+    };
+
+    fetchReservations();
+
+    socketInstance.on('reservation:created', (newReservation: Reservation) => {
+      setReservations((prev) => [...prev, newReservation]);
+    });
+
+    socketInstance.on(
+      'reservation:updated',
+      (updatedReservation: Reservation) => {
+        setReservations((prev) =>
+          prev.map((reservation) =>
+            reservation.id === updatedReservation.id
+              ? updatedReservation
+              : reservation
+          )
+        );
+      }
+    );
+
+    socketInstance.on('reservation:deleted', (deletedReservationId: string) => {
+      setReservations((prev) =>
+        prev.filter((reservation) => reservation.id !== deletedReservationId)
+      );
+    });
+
+    return () => {
+      socketInstance.disconnect();
+    };
+  }, [session, loading]); // Ensure useEffect runs only when session is available
 
   return (
     <PageContainer scrollable>
       <div className="space-y-4">
         <div className="flex items-start justify-between">
           <Heading
-            title={`Reservations (${data.length})`}
+            title={`Reservations (${reservations.length})`}
             description="Manage reservations for your organization."
           />
           <Link
@@ -75,7 +109,7 @@ export default async function ReservationListingPage({}: TReservationListingPage
           </Link>
         </div>
         <Separator />
-        <ReservationTable data={data} />
+        <ReservationTableWithSocket data={reservations} />
       </div>
     </PageContainer>
   );

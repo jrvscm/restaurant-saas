@@ -110,6 +110,15 @@ export type Employee = {
   profile_picture?: string | null; // Profile picture can be a string (URL) or null (if no picture)
 };
 
+interface Reservation {
+  id: string;
+  date: string;
+  time: string;
+  guests: number;
+  status: 'pending' | 'confirmed' | 'cancelled';
+  notes?: string;
+}
+
 export type Product = {
   photo_url: string;
   name: string;
