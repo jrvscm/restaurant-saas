@@ -23,7 +23,7 @@ import {
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { useSession } from '@/hooks/use-session';
-
+console.log('toast', toast);
 const formSchema = z.object({
   date: z.string().min(1, {
     message: 'Date is required.'
@@ -55,7 +55,6 @@ export default function ReservationForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log(session);
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/reservation/reservations`,
         {
