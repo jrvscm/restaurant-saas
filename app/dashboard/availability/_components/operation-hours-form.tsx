@@ -22,6 +22,7 @@ import {
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useSession } from '@/hooks/use-session';
 import { toast } from 'sonner';
+import { operatingHoursReducer } from './reducer/operatingHoursReducer';
 
 // Order of days for the week
 const daysOfWeek = [
@@ -33,24 +34,6 @@ const daysOfWeek = [
   'Saturday',
   'Sunday'
 ];
-
-// Define a reducer to manage the week state
-const weekReducer = (state, action) => {
-  switch (action.type) {
-    case 'SET_AVAILABILITY':
-      return { ...state, [action.day]: action.value };
-    case 'TOGGLE_DAY':
-      const newState = { ...state };
-      if (newState[action.day]) {
-        delete newState[action.day];
-      } else {
-        newState[action.day] = { startTime: '09:00', endTime: '17:00' }; // Default times
-      }
-      return newState;
-    default:
-      return state;
-  }
-};
 
 const formSchema = {
   operatingHours: [
@@ -65,7 +48,7 @@ const formSchema = {
 };
 
 export default function OperatingHoursForm() {
-  const [weekState, dispatch] = React.useReducer(weekReducer, {});
+  const [weekState, dispatch] = React.useReducer(operatingHoursReducer, {});
   const { session, loading } = useSession();
   const form = useForm({
     defaultValues: formSchema
@@ -81,12 +64,6 @@ export default function OperatingHoursForm() {
     }`;
   };
 
-  const convertToShortTime = (time) => {
-    const [hour, minute] = time.split(':');
-    return `${hour}:${minute}`;
-  };
-
-  // Fetch availability data
   React.useEffect(() => {
     const fetchAvailability = async () => {
       if (!session || loading) return;
@@ -117,8 +94,8 @@ export default function OperatingHoursForm() {
         // Update availability state with fetched data
         const availabilityObj = data.reduce((acc, item) => {
           acc[item.dayOfWeek] = {
-            startTime: convertToShortTime(item.startTime),
-            endTime: convertToShortTime(item.endTime)
+            startTime: item.startTime,
+            endTime: item.endTime
           };
           return acc;
         }, {});
@@ -142,6 +119,7 @@ export default function OperatingHoursForm() {
   // Handle form submit
   const onSubmit = async (values) => {
     try {
+      // Only send the days that are checked (present in weekState)
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/availability`,
         {
@@ -151,7 +129,7 @@ export default function OperatingHoursForm() {
             Authorization: `Bearer: ${session?.token}`
           },
           credentials: 'include',
-          body: JSON.stringify({ availabilityData: weekState })
+          body: JSON.stringify({ availabilityData: weekState }) // Send only checked days
         }
       );
 
@@ -192,16 +170,16 @@ export default function OperatingHoursForm() {
             </div>
 
             {/* Operating Hours Section (Only show for selected days) */}
-            {Object.keys(weekState).map((day, index) => (
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-4" key={day}>
+            {Object.keys(weekState).map((day) => (
+              <div key={day} className="grid grid-cols-1 gap-6 md:grid-cols-4">
                 <FormField
                   control={form.control}
-                  name={`operatingHours[${index}].dayOfWeek`}
+                  name={`operatingHours[${day}].dayOfWeek`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>{day}</FormLabel>
                       <FormControl>
-                        <Input disabled value={field.value} />
+                        <Input disabled value={day} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -209,13 +187,16 @@ export default function OperatingHoursForm() {
                 />
                 <FormField
                   control={form.control}
-                  name={`operatingHours[${index}].startTime`}
+                  name={`operatingHours[${day}].startTime`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Open Time</FormLabel>
                       <FormControl>
                         <Select
-                          onValueChange={field.onChange}
+                          onValueChange={(value) => {
+                            field.onChange(value); // Update react-hook-form value
+                            dispatch({ type: 'UPDATE_START_TIME', day, value }); // Update local state
+                          }}
                           value={weekState[day]?.startTime}
                         >
                           <SelectTrigger>
@@ -243,13 +224,16 @@ export default function OperatingHoursForm() {
                 />
                 <FormField
                   control={form.control}
-                  name={`operatingHours[${index}].endTime`}
+                  name={`operatingHours[${day}].endTime`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Close Time</FormLabel>
                       <FormControl>
                         <Select
-                          onValueChange={field.onChange}
+                          onValueChange={(value) => {
+                            field.onChange(value); // Update react-hook-form value
+                            dispatch({ type: 'UPDATE_END_TIME', day, value }); // Update local state
+                          }}
                           value={weekState[day]?.endTime}
                         >
                           <SelectTrigger>
