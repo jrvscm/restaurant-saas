@@ -85,8 +85,10 @@ module.exports = {
         logo: ['"Fredericka the Great"', 'serif']
       },
       backgroundImage: {
-        'rewards-image': "url('//images.ctfassets.net/dho5s3z0t7k5/6cGKHhsyrkWQR71LAuMjAW/0fdb2cec42b2e08de8958e9e0bb37632/nik-owens-40OJLYVWeeM-unsplash__1_.jpg')",
-        'paper-texture': "url('//images.ctfassets.net/dho5s3z0t7k5/0z8Sw6prWk65vrMaXWdFw/e82e4fc5b3762ad161a872eccd8dba50/olga-thelavart-HZm2XR0whdw-unsplash.jpg')",
+        'rewards-image':
+          "url('//images.ctfassets.net/dho5s3z0t7k5/6cGKHhsyrkWQR71LAuMjAW/0fdb2cec42b2e08de8958e9e0bb37632/nik-owens-40OJLYVWeeM-unsplash__1_.jpg')",
+        'paper-texture':
+          "url('//images.ctfassets.net/dho5s3z0t7k5/0z8Sw6prWk65vrMaXWdFw/e82e4fc5b3762ad161a872eccd8dba50/olga-thelavart-HZm2XR0whdw-unsplash.jpg')",
         'hero-image':
           "linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2)), url('//images.ctfassets.net/dho5s3z0t7k5/4NMGvilLFqsQLLtLsNrKg6/27d2a971e5712bc687782898beadc22b/klara-kulikova-5eoiyhGLFb4-unsplash.jpg')",
         'menu-image':

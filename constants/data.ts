@@ -137,7 +137,7 @@ export const navItems: NavItem[] = [
     icon: 'dashboard',
     isActive: false,
     shortcut: ['d', 'd'],
-    items: [] // Empty array as there are no child items for Dashboard
+    items: []
   },
   {
     title: 'Employee',
@@ -159,14 +159,8 @@ export const navItems: NavItem[] = [
         url: '/dashboard/availability/hours',
         icon: 'userPen',
         shortcut: ['x', 'x']
-      },
-      {
-        title: 'Settings',
-        shortcut: ['z', 'z'],
-        url: '/dashboard/availability/settings',
-        icon: 'login'
       }
-    ] // No child items
+    ]
   },
   {
     title: 'Reservations',

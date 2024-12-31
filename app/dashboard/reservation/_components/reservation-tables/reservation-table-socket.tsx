@@ -16,10 +16,13 @@ type Reservation = {
 
 type ReservationTableWithSocketProps = {
   data: Reservation[];
+  onStatusChange: (reservationId: string, newStatus: string) => void;
 };
-
+//TODO: fix sorting on update or add because the new reservation just gets added to the list,
+//TODO: but should be sorted by date in the panel so on refresh they are aligned
 export const ReservationTableWithSocket = ({
-  data
+  data,
+  onStatusChange
 }: ReservationTableWithSocketProps) => {
   const [reservations, setReservations] = useState<Reservation[]>(data);
   const { session } = useSession();
@@ -63,5 +66,7 @@ export const ReservationTableWithSocket = ({
     };
   }, [socket]);
 
-  return <ReservationTable data={reservations} />;
+  return (
+    <ReservationTable data={reservations} onStatusChange={onStatusChange} />
+  );
 };

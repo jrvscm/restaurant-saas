@@ -1,11 +1,17 @@
 'use client';
 
-import { DataTable } from '@/components/ui/table/data-table';
+import { ReservationDataTable } from './reservation-data-table';
 import { DataTableSearch } from '@/components/ui/table/data-table-search';
 import { columns } from './columns';
 import { useReservationTableFilters } from './use-reservation-table-filters';
 
-export default function ReservationTable({ data }: { data: any[] }) {
+export default function ReservationTable({
+  data,
+  onStatusChange
+}: {
+  data: any[];
+  onStatusChange: (reservationId: string, newStatus: string) => void;
+}) {
   const { searchQuery, setSearchQuery, setPage } = useReservationTableFilters();
 
   return (
@@ -18,7 +24,12 @@ export default function ReservationTable({ data }: { data: any[] }) {
           setPage={setPage}
         />
       </div>
-      <DataTable columns={columns} data={data} />
+      <ReservationDataTable
+        columns={columns}
+        data={data}
+        totalItems={data.length}
+        onStatusChange={onStatusChange}
+      />
     </div>
   );
 }

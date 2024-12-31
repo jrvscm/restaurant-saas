@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import PageContainer from '@/components/layout/page-container';
@@ -21,7 +20,7 @@ type Reservation = {
   notes?: string;
 };
 
-export default function ReservationListingPage() {
+export default function ReservationListingPage(onStatusChange) {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const { session, loading } = useSession();
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -91,7 +90,44 @@ export default function ReservationListingPage() {
     return () => {
       socketInstance.disconnect();
     };
-  }, [session, loading]); // Ensure useEffect runs only when session is available
+  }, [session, loading]);
+
+  const updateReservationStatus = async (
+    reservationId: string,
+    newStatus: string
+  ) => {
+    // Send the PUT request to update the status
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/reservation/reservations/${reservationId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session.token}`
+          },
+          body: JSON.stringify({ status: newStatus })
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to update reservation status');
+      }
+
+      const updatedReservation = await response.json();
+
+      // Update the local state after successfully updating the status
+      setReservations((prev) =>
+        prev.map((reservation) =>
+          reservation.id === reservationId
+            ? { ...reservation, status: updatedReservation.status }
+            : reservation
+        )
+      );
+    } catch (error) {
+      console.error('Error updating reservation status:', error);
+    }
+  };
 
   return (
     <PageContainer scrollable>
@@ -109,7 +145,10 @@ export default function ReservationListingPage() {
           </Link>
         </div>
         <Separator />
-        <ReservationTableWithSocket data={reservations} />
+        <ReservationTableWithSocket
+          data={reservations}
+          onStatusChange={updateReservationStatus}
+        />
       </div>
     </PageContainer>
   );
