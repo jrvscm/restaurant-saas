@@ -53,6 +53,7 @@ interface ReservationDataTableProps<TData, TValue> {
   totalItems: number;
   pageSizeOptions?: number[];
   onStatusChange: (id: string, status: string) => void;
+  fetchReservations: () => void;
 }
 
 // Helper function to convert time to 12-hour AM/PM format
@@ -71,7 +72,8 @@ export function ReservationDataTable<TData, TValue>({
   data,
   totalItems,
   pageSizeOptions = [10, 20, 30, 40, 50],
-  onStatusChange
+  onStatusChange,
+  fetchReservations
 }: ReservationDataTableProps<TData, TValue>) {
   const [currentPage, setCurrentPage] = useQueryState(
     'page',

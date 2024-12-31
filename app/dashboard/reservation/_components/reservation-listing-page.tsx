@@ -20,71 +20,61 @@ type Reservation = {
   notes?: string;
 };
 
-export default function ReservationListingPage(onStatusChange) {
+export default function ReservationListingPage() {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const { session, loading } = useSession();
   const [socket, setSocket] = useState<Socket | null>(null);
 
+  const fetchReservations = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/reservation/reservations`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session.token}`
+          },
+          credentials: 'include'
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch reservations');
+      }
+
+      const data: Reservation[] = await response.json();
+      setReservations(data);
+      console.log('reservationsData', data);
+    } catch (error) {
+      console.error('Error fetching reservations:', error);
+    }
+  };
+
   useEffect(() => {
-    if (!session || loading) return; // Wait for session to be available
+    if (!session || loading) return;
 
     const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
       query: {
-        organizationId: session.user.organizationId || '' // Pass the organizationId from session
+        organizationId: session.user.organizationId || ''
       },
       withCredentials: true
     });
 
     setSocket(socketInstance);
 
-    const fetchReservations = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/reservation/reservations`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${session.token}` // Pass token from session
-            },
-            credentials: 'include'
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch reservations');
-        }
-
-        const data: Reservation[] = await response.json();
-        setReservations(data);
-      } catch (error) {
-        console.error('Error fetching reservations:', error);
-      }
-    };
-
     fetchReservations();
 
-    socketInstance.on('reservation:created', (newReservation: Reservation) => {
-      setReservations((prev) => [...prev, newReservation]);
+    socketInstance.on('reservation:created', () => {
+      fetchReservations(); // Refetch when a reservation is created
     });
 
-    socketInstance.on(
-      'reservation:updated',
-      (updatedReservation: Reservation) => {
-        setReservations((prev) =>
-          prev.map((reservation) =>
-            reservation.id === updatedReservation.id
-              ? updatedReservation
-              : reservation
-          )
-        );
-      }
-    );
+    socketInstance.on('reservation:updated', () => {
+      fetchReservations(); // Refetch when a reservation is updated
+    });
 
-    socketInstance.on('reservation:deleted', (deletedReservationId: string) => {
-      setReservations((prev) =>
-        prev.filter((reservation) => reservation.id !== deletedReservationId)
-      );
+    socketInstance.on('reservation:deleted', () => {
+      fetchReservations(); // Refetch when a reservation is deleted
     });
 
     return () => {
@@ -96,7 +86,6 @@ export default function ReservationListingPage(onStatusChange) {
     reservationId: string,
     newStatus: string
   ) => {
-    // Send the PUT request to update the status
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/reservation/reservations/${reservationId}`,
@@ -116,7 +105,6 @@ export default function ReservationListingPage(onStatusChange) {
 
       const updatedReservation = await response.json();
 
-      // Update the local state after successfully updating the status
       setReservations((prev) =>
         prev.map((reservation) =>
           reservation.id === reservationId
@@ -148,6 +136,7 @@ export default function ReservationListingPage(onStatusChange) {
         <ReservationTableWithSocket
           data={reservations}
           onStatusChange={updateReservationStatus}
+          fetchReservations={fetchReservations} // Pass fetch function here
         />
       </div>
     </PageContainer>

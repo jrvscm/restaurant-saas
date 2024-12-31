@@ -17,12 +17,13 @@ type Reservation = {
 type ReservationTableWithSocketProps = {
   data: Reservation[];
   onStatusChange: (reservationId: string, newStatus: string) => void;
+  fetchReservations: () => void; // Accept fetchReservations as prop
 };
-//TODO: fix sorting on update or add because the new reservation just gets added to the list,
-//TODO: but should be sorted by date in the panel so on refresh they are aligned
+
 export const ReservationTableWithSocket = ({
   data,
-  onStatusChange
+  onStatusChange,
+  fetchReservations
 }: ReservationTableWithSocketProps) => {
   const [reservations, setReservations] = useState<Reservation[]>(data);
   const { session } = useSession();
@@ -39,24 +40,16 @@ export const ReservationTableWithSocket = ({
   useEffect(() => {
     if (!socket) return;
 
-    socket.on('reservation:created', (newReservation: Reservation) => {
-      setReservations((prev) => [...prev, newReservation]);
+    socket.on('reservation:created', () => {
+      fetchReservations(); // Refetch reservations when created
     });
 
-    socket.on('reservation:updated', (updatedReservation: Reservation) => {
-      setReservations((prev) =>
-        prev.map((reservation) =>
-          reservation.id === updatedReservation.id
-            ? updatedReservation
-            : reservation
-        )
-      );
+    socket.on('reservation:updated', () => {
+      fetchReservations(); // Refetch reservations when updated
     });
 
-    socket.on('reservation:deleted', (deletedReservationId: string) => {
-      setReservations((prev) =>
-        prev.filter((reservation) => reservation.id !== deletedReservationId)
-      );
+    socket.on('reservation:deleted', () => {
+      fetchReservations(); // Refetch reservations when deleted
     });
 
     return () => {
@@ -64,7 +57,7 @@ export const ReservationTableWithSocket = ({
       socket.off('reservation:updated');
       socket.off('reservation:deleted');
     };
-  }, [socket]);
+  }, [socket, fetchReservations]);
 
   return (
     <ReservationTable data={reservations} onStatusChange={onStatusChange} />

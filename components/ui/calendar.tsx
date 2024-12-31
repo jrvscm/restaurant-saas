@@ -17,6 +17,7 @@ function Calendar({
 }: CalendarProps) {
   return (
     <DayPicker
+      disabled={{ before: new Date() }}
       showOutsideDays={showOutsideDays}
       className={cn('p-3', className)}
       classNames={{
@@ -50,13 +51,13 @@ function Calendar({
         day_range_start: 'day-range-start',
         day_range_end: 'day-range-end',
         //selected day
-        day_selected:`
+        day_selected: `
           bg-secondary border border-secondary 
           text-secondary-foreground
         `,
-        day_today: 'bg-white/20 border border-secondary/50',
-        day_outside: 'text-muted-foreground opacity-50',
-        day_disabled: 'text-muted-foreground opacity-50',
+        day_today: 'border border-secondary-50',
+        day_outside: '',
+        day_disabled: 'text-muted-foreground opacity-50 pointer-events-none',
         day_range_middle:
           'aria-selected:bg-secondary-foreground aria-selected:text-accent-foreground',
         day_hidden: 'invisible',

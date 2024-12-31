@@ -65,7 +65,7 @@ export const ReservationForm = () => {
     const dayOfWeek = new Date(date).toLocaleString('en-us', {
       weekday: 'long'
     });
-
+    console.log('dayOfWeek', dayOfWeek);
     // Get the availability for the selected day from the fetched data
     const selectedDayAvailability = availability.find(
       (day) => day.dayOfWeek === dayOfWeek
@@ -73,44 +73,95 @@ export const ReservationForm = () => {
 
     if (selectedDayAvailability) {
       const { startTime, endTime } = selectedDayAvailability;
-      generateTimeSlots(startTime, endTime);
+      generateTimeSlots(startTime, endTime, dayOfWeek, selectedDayAvailability);
     } else {
       setAvailableTimes([]);
       toast.error('No availability found for the selected day.');
     }
   }, [availability, date]);
 
-  const generateTimeSlots = (startTime: string, endTime: string): void => {
+  const generateTimeSlots = (
+    startTime: string,
+    endTime: string,
+    selectedDate: Date | null,
+    organizationAvailability: any
+  ) => {
+    if (!selectedDate || !organizationAvailability) return;
+
     const times: string[] = [];
 
     // Get the current date
     const today = new Date();
 
-    // Parse start and end times, and set the correct Date object for today
-    let start = new Date(
-      `${today.toISOString().split('T')[0]}T${startTime}:00`
-    );
-    let end = new Date(`${today.toISOString().split('T')[0]}T${endTime}:00`);
+    // Get the day of the week for today and selected date
+    const selectedDayOfWeek = selectedDate.toLocaleString('en-us', {
+      weekday: 'long'
+    });
+    const todayDayOfWeek = today.toLocaleString('en-us', { weekday: 'long' });
 
+    // Check the organization's availability for the selected day
+    const selectedDayAvailabilityHasRange =
+      organizationAvailability.dayOfWeek.toLowerCase() ===
+        selectedDayOfWeek.toLowerCase() &&
+      organizationAvailability?.startTime &&
+      organizationAvailability?.endTime;
+
+    if (!selectedDayAvailabilityHasRange) {
+      console.error('No availability for the selected day');
+      return;
+    }
+    const selectedDayAvailability = organizationAvailability;
+    // Parse start and end times based on selected day availability
+    let start = new Date(
+      `${today.toISOString().split('T')[0]}T${
+        selectedDayAvailability.startTime
+      }:00`
+    );
+    let end = new Date(
+      `${today.toISOString().split('T')[0]}T${
+        selectedDayAvailability.endTime
+      }:00`
+    );
     const currentTime = new Date();
 
-    // If the start time is in the past, set the start time to the current time
-    if (start < currentTime) {
-      start = new Date(currentTime);
-      start.setSeconds(0); // Reset seconds to 0 to start at the exact minute
+    // If the selected date is today, limit the start time to the current time
+    if (selectedDayOfWeek === todayDayOfWeek) {
+      if (start < currentTime) {
+        // Round to the next 30-minute interval if the start time is in the past
+        const currentMinutes = currentTime.getMinutes();
+        const roundedMinutes = Math.ceil(currentMinutes / 30) * 30; // Get the next 30-minute interval
+
+        currentTime.setMinutes(roundedMinutes);
+        currentTime.setSeconds(0); // Reset seconds to 0
+
+        start = new Date(currentTime); // Set the new start time to the rounded time
+      }
+    }
+
+    // If the selected day is in the future, use the full time range
+    else {
+      start = new Date(
+        `${today.toISOString().split('T')[0]}T${
+          organizationAvailability.startTime
+        }:00`
+      );
+      end = new Date(
+        `${today.toISOString().split('T')[0]}T${
+          organizationAvailability.endTime
+        }:00`
+      );
     }
 
     // Generate time slots in 30-minute intervals between start and end time
     while (start < end) {
-      if (start >= currentTime) {
-        // Format time in 12-hour AM/PM format without leading zeroes
-        const timeSlot = start.toLocaleTimeString([], {
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true
-        });
-        times.push(timeSlot);
-      }
+      // Format time in 12-hour AM/PM format without leading zeroes
+      const timeSlot = start.toLocaleTimeString([], {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
+      times.push(timeSlot);
+
       start.setMinutes(start.getMinutes() + 30); // Increment by 30 minutes
     }
 

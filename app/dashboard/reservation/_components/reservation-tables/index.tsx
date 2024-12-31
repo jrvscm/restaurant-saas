@@ -7,10 +7,12 @@ import { useReservationTableFilters } from './use-reservation-table-filters';
 
 export default function ReservationTable({
   data,
-  onStatusChange
+  onStatusChange,
+  fetchReservations
 }: {
   data: any[];
   onStatusChange: (reservationId: string, newStatus: string) => void;
+  fetchReservations: () => void;
 }) {
   const { searchQuery, setSearchQuery, setPage } = useReservationTableFilters();
 
@@ -29,6 +31,7 @@ export default function ReservationTable({
         data={data}
         totalItems={data.length}
         onStatusChange={onStatusChange}
+        fetchReservations={fetchReservations}
       />
     </div>
   );
