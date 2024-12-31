@@ -65,7 +65,7 @@ export const ReservationForm = () => {
     const dayOfWeek = new Date(date).toLocaleString('en-us', {
       weekday: 'long'
     });
-    console.log('dayOfWeek', dayOfWeek);
+
     // Get the availability for the selected day from the fetched data
     const selectedDayAvailability = availability.find(
       (day) => day.dayOfWeek === dayOfWeek
