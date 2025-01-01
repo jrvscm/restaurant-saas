@@ -22,11 +22,12 @@ import { convertTo24HourFormat } from '../../../lib/convertTime';
 
 export const ReservationForm = () => {
   const [date, setDate] = React.useState<Date | null>(null);
-  const [time, setTime] = React.useState('12:00 PM');
-  const [guests, setGuests] = React.useState('1');
-  const [phoneNumber, setPhoneNumber] = React.useState('');
+  const [time, setTime] = React.useState<string>('12:00 PM');
+  const [guests, setGuests] = React.useState<string>('1');
+  const [phoneNumber, setPhoneNumber] = React.useState<string>('');
   const [availability, setAvailability] = React.useState<any[]>([]);
   const [availableTimes, setAvailableTimes] = React.useState<string[]>([]);
+  const [name, setName] = React.useState<string>('');
 
   React.useEffect(() => {
     const fetchAvailability = async () => {
@@ -193,7 +194,8 @@ export const ReservationForm = () => {
             notes: `source: website`,
             organizationId: process.env.NEXT_PUBLIC_ORGANIZATION_ID,
             phoneNumber,
-            apiKey: process.env.NEXT_PUBLIC_API_KEY
+            apiKey: process.env.NEXT_PUBLIC_API_KEY,
+            contactName: name
           })
         }
       );
@@ -211,6 +213,7 @@ export const ReservationForm = () => {
       setTime('12:00 PM');
       setGuests('1');
       setPhoneNumber('');
+      setName('');
     } catch (error) {
       toast.error(error.message || 'Something went wrong');
     }
@@ -240,7 +243,7 @@ export const ReservationForm = () => {
       md:top-[1rem]"
       />
       <div className="container mx-auto p-8">
-        <form className="grid grid-cols-1 items-center gap-6 md:grid-cols-5">
+        <form className="grid grid-cols-1 items-center gap-6 md:grid-cols-6">
           {/* Date Picker */}
           <div className="relative">
             <Popover>
@@ -322,6 +325,18 @@ export const ReservationForm = () => {
               placeholder="Enter your phone number"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
+              className="h-10 w-full rounded-md border border-secondary-foreground placeholder:text-secondary-foreground hover:bg-secondary-50 hover:text-secondary-foreground hover:shadow-md focus-visible:ring-1 focus-visible:ring-secondary-foreground"
+            />
+          </div>
+
+          {/* Name Input */}
+          <div className="relative">
+            <Input
+              required
+              type="name"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="h-10 w-full rounded-md border border-secondary-foreground placeholder:text-secondary-foreground hover:bg-secondary-50 hover:text-secondary-foreground hover:shadow-md focus-visible:ring-1 focus-visible:ring-secondary-foreground"
             />
           </div>

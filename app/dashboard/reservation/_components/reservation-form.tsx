@@ -318,11 +318,11 @@ export default function ReservationForm() {
                       <FormControl>
                         <SelectTrigger className="bg-transparent hover:bg-accent hover:text-accent-foreground">
                           <Clock className="mr-[1rem] h-5 w-5" />
-                          {!field.value && (
+                          {(!field.value && (
                             <span className="mr-auto text-muted-foreground">
                               Select a time
                             </span>
-                          )}
+                          )) || <span className="mr-auto">{field.value}</span>}
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
