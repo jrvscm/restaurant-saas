@@ -275,8 +275,8 @@ export default function ReservationForm() {
                           <Button
                             variant="outline"
                             className="
-                              flex h-[36px] w-full items-center justify-start rounded-md border border-input
-                              focus:ring-1 focus:ring-secondary-foreground
+                              flex h-[36px] w-full items-center justify-start rounded-md border focus:ring-primary
+                              focus-visible:border-primary focus-visible:ring-0
                             "
                           >
                             <CalendarIcon className="mr-[1rem] h-5 w-5" />
@@ -316,7 +316,7 @@ export default function ReservationForm() {
                     <FormLabel>Time</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-transparent hover:bg-accent hover:text-accent-foreground">
                           <Clock className="mr-[1rem] h-5 w-5" />
                           {!field.value && (
                             <span className="mr-auto text-muted-foreground">
@@ -352,7 +352,7 @@ export default function ReservationForm() {
                     <FormLabel>Number of Guests</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-transparent hover:bg-accent hover:text-accent-foreground">
                           <Users className="mr-[1rem] h-5 w-5" />
                           {field.value == '' && (
                             <span className="mr-auto text-muted-foreground">
@@ -391,7 +391,12 @@ export default function ReservationForm() {
                         placeholder="Contact Name"
                         type="text"
                         {...field}
-                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none"
+                        className="
+                          w-full rounded-md 
+                          border border-input bg-transparent 
+                          px-3 py-2 text-sm hover:bg-accent 
+                          hover:text-accent-foreground focus:outline-none focus-visible:border-primary
+                        "
                       />
                     </FormControl>
                     <FormMessage />
@@ -410,7 +415,12 @@ export default function ReservationForm() {
                       <input
                         type="tel"
                         {...field}
-                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none"
+                        className="
+                          w-full rounded-md border border-input 
+                          bg-background bg-transparent px-3 py-2 
+                          text-sm hover:bg-accent hover:text-accent-foreground 
+                          focus:outline-none focus-visible:border-primary
+                        "
                         placeholder="Enter phone number"
                       />
                     </FormControl>
@@ -428,7 +438,7 @@ export default function ReservationForm() {
                     <FormLabel>Status</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-transparent hover:bg-accent hover:text-accent-foreground">
                           <SelectValue placeholder="Select status" />
                         </SelectTrigger>
                       </FormControl>
@@ -453,7 +463,12 @@ export default function ReservationForm() {
                     <textarea
                       placeholder="Additional notes (optional)"
                       {...field}
-                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none"
+                      className="
+                        w-full rounded-md 
+                        border border-input bg-transparent px-3 py-2 
+                        text-sm hover:bg-accent 
+                        hover:text-accent-foreground focus:outline-none focus-visible:border-primary
+                      "
                     />
                   </FormControl>
                   <FormMessage />

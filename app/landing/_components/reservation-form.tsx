@@ -24,7 +24,7 @@ export const ReservationForm = () => {
   const [date, setDate] = React.useState<Date | null>(null);
   const [time, setTime] = React.useState('12:00 PM');
   const [guests, setGuests] = React.useState('1');
-  const [email, setEmail] = React.useState('');
+  const [phoneNumber, setPhoneNumber] = React.useState('');
   const [availability, setAvailability] = React.useState<any[]>([]);
   const [availableTimes, setAvailableTimes] = React.useState<string[]>([]);
 
@@ -192,7 +192,7 @@ export const ReservationForm = () => {
             guests: parseInt(guests, 10),
             notes: `source: website`,
             organizationId: process.env.NEXT_PUBLIC_ORGANIZATION_ID,
-            email: email,
+            phoneNumber,
             apiKey: process.env.NEXT_PUBLIC_API_KEY
           })
         }
@@ -204,12 +204,13 @@ export const ReservationForm = () => {
       }
 
       const reservation = await response.json();
-      toast.success('Reservation created successfully!');
-
+      toast.success(
+        "Reservation created successfully! we'll text you when your reservation is confirmed."
+      );
       setDate(null);
       setTime('12:00 PM');
       setGuests('1');
-      setEmail('');
+      setPhoneNumber('');
     } catch (error) {
       toast.error(error.message || 'Something went wrong');
     }
@@ -313,14 +314,14 @@ export const ReservationForm = () => {
             </Select>
           </div>
 
-          {/* Email Input */}
+          {/* Phone Input */}
           <div className="relative">
             <Input
               required
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)} // Update email state
+              type="phone"
+              placeholder="Enter your phone number"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
               className="h-10 w-full rounded-md border border-secondary-foreground placeholder:text-secondary-foreground hover:bg-secondary-50 hover:text-secondary-foreground hover:shadow-md focus-visible:ring-1 focus-visible:ring-secondary-foreground"
             />
           </div>
