@@ -30,7 +30,6 @@ export default function ReservationListingPage() {
   const isArchive = pathname.includes('archive');
 
   const handleArchive = async (reservationId: string) => {
-    console.log(reservationId);
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/reservation/reservations/${reservationId}/archive`,
