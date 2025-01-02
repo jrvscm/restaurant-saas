@@ -28,6 +28,38 @@ export default function ReservationListingPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
   const pathname = usePathname();
   const isArchive = pathname.includes('archive');
+
+  const handleArchive = async (reservationId: string) => {
+    console.log(reservationId);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/reservation/reservations/${reservationId}/archive`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session.token}`
+          },
+          body: JSON.stringify({ id: reservationId }),
+          credentials: 'include'
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to archive reservation');
+      }
+
+      const archivedReservation = await response.json();
+
+      // Remove the archived reservation from the active list
+      setReservations((prev) =>
+        prev.filter((reservation) => reservation.id !== reservationId)
+      );
+    } catch (error) {
+      console.error('Error archiving reservation:', error);
+    }
+  };
+
   const fetchReservations = async () => {
     try {
       const response = await fetch(
@@ -145,6 +177,7 @@ export default function ReservationListingPage() {
             data={reservations}
             onStatusChange={updateReservationStatus}
             fetchReservations={fetchReservations}
+            handleArchive={handleArchive}
           />
         )}
         {isArchive && <ReservationTable data={reservations} />}

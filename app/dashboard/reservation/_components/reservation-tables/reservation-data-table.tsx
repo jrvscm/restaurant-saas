@@ -55,6 +55,7 @@ interface ReservationDataTableProps<TData, TValue> {
   pageSizeOptions?: number[];
   onStatusChange: (id: string, status: string) => void;
   fetchReservations: () => void;
+  handleArchive: (id: string) => void;
 }
 
 // Helper function to convert time to 12-hour AM/PM format
@@ -74,7 +75,8 @@ export function ReservationDataTable<TData, TValue>({
   totalItems,
   pageSizeOptions = [10, 20, 30, 40, 50],
   onStatusChange,
-  fetchReservations
+  fetchReservations,
+  handleArchive
 }: ReservationDataTableProps<TData, TValue>) {
   const pathname = usePathname();
   const [currentPage, setCurrentPage] = useQueryState(
@@ -188,6 +190,19 @@ export function ReservationDataTable<TData, TValue>({
                           <SelectItem value="canceled">Canceled</SelectItem>
                         </SelectContent>
                       </Select>
+                    </TableCell>
+                  )}
+
+                  {!pathname.includes('archive') && (
+                    <TableCell>
+                      {row.original.status != 'pending' && (
+                        <Button
+                          className="bg-destructive-20 text-muted-foreground hover:bg-destructive-40"
+                          onClick={() => handleArchive(row.original.id)}
+                        >
+                          Archive
+                        </Button>
+                      )}
                     </TableCell>
                   )}
                 </TableRow>

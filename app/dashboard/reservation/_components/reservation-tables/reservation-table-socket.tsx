@@ -17,13 +17,15 @@ type Reservation = {
 type ReservationTableWithSocketProps = {
   data: Reservation[];
   onStatusChange: (reservationId: string, newStatus: string) => void;
-  fetchReservations: () => void; // Accept fetchReservations as prop
+  fetchReservations: () => void;
+  handleArchive: (reservationId: string) => void;
 };
 
 export const ReservationTableWithSocket = ({
   data,
   onStatusChange,
-  fetchReservations
+  fetchReservations,
+  handleArchive
 }: ReservationTableWithSocketProps) => {
   const [reservations, setReservations] = useState<Reservation[]>(data);
   const { session } = useSession();
@@ -60,6 +62,10 @@ export const ReservationTableWithSocket = ({
   }, [socket, fetchReservations]);
 
   return (
-    <ReservationTable data={reservations} onStatusChange={onStatusChange} />
+    <ReservationTable
+      data={reservations}
+      onStatusChange={onStatusChange}
+      handleArchive={handleArchive}
+    />
   );
 };
