@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 import PageContainer from '@/components/layout/page-container';
 import { Heading } from '@/components/ui/heading';
@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { useSession } from '@/hooks/use-session';
 import { usePathname } from 'next/navigation';
+import { toast } from 'sonner'; // Import toast
 
 type Reservation = {
   id: string;
@@ -24,42 +25,47 @@ type Reservation = {
 
 export default function ReservationListingPage() {
   const [reservations, setReservations] = useState<Reservation[]>([]);
-  const { session, loading } = useSession();
+  const { session } = useSession();
   const [socket, setSocket] = useState<Socket | null>(null);
   const pathname = usePathname();
   const isArchive = pathname.includes('archive');
 
-  const handleArchive = async (reservationId: string) => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/reservation/reservations/${reservationId}/archive`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${session.token}`
-          },
-          body: JSON.stringify({ id: reservationId }),
-          credentials: 'include'
+  const handleArchive = useCallback(
+    async (reservationId: string) => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/reservation/reservations/${reservationId}/archive`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${session.token}` // Ensure token is valid
+            },
+            credentials: 'include' // Verify if necessary
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to archive reservation');
         }
-      );
 
-      if (!response.ok) {
-        throw new Error('Failed to archive reservation');
+        const archivedReservation = await response.json();
+
+        // Remove the archived reservation from the active list
+        setReservations((prev) =>
+          prev.filter((reservation) => reservation.id !== reservationId)
+        );
+
+        toast.success('Reservation archived successfully!');
+      } catch (error: any) {
+        console.error('Error archiving reservation:', error);
+        toast.error(`Failed to archive reservation: ${error.message || error}`);
       }
+    },
+    [session?.token, setReservations]
+  );
 
-      const archivedReservation = await response.json();
-
-      // Remove the archived reservation from the active list
-      setReservations((prev) =>
-        prev.filter((reservation) => reservation.id !== reservationId)
-      );
-    } catch (error) {
-      console.error('Error archiving reservation:', error);
-    }
-  };
-
-  const fetchReservations = async () => {
+  const fetchReservations = useCallback(async () => {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/reservation/${
@@ -81,14 +87,15 @@ export default function ReservationListingPage() {
 
       const data: Reservation[] = await response.json();
       setReservations(data);
-      console.log('reservationsData', data);
+      toast.success('Reservations fetched successfully!');
     } catch (error) {
       console.error('Error fetching reservations:', error);
+      toast.error('Failed to fetch reservations.');
     }
-  };
+  }, [isArchive, session?.token, setReservations]);
 
   useEffect(() => {
-    if (!session || loading) return;
+    if (!session) return;
     fetchReservations();
     if (!isArchive) {
       const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
@@ -116,42 +123,45 @@ export default function ReservationListingPage() {
         socketInstance.disconnect();
       };
     }
-  }, [session, loading]);
+  }, [session]);
 
-  const updateReservationStatus = async (
-    reservationId: string,
-    newStatus: string
-  ) => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/reservation/reservations/${reservationId}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${session.token}`
-          },
-          body: JSON.stringify({ status: newStatus })
+  const updateReservationStatus = useCallback(
+    async (reservationId: string, newStatus: string) => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/reservation/reservations/${reservationId}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${session.token}`
+            },
+            body: JSON.stringify({ status: newStatus })
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to update reservation status');
         }
-      );
 
-      if (!response.ok) {
-        throw new Error('Failed to update reservation status');
+        const updatedReservation = await response.json();
+
+        setReservations((prev) =>
+          prev.map((reservation) =>
+            reservation.id === reservationId
+              ? { ...reservation, status: updatedReservation.status }
+              : reservation
+          )
+        );
+
+        toast.success('Reservation status updated successfully!');
+      } catch (error) {
+        console.error('Error updating reservation status:', error);
+        toast.error('Failed to update reservation status.');
       }
-
-      const updatedReservation = await response.json();
-
-      setReservations((prev) =>
-        prev.map((reservation) =>
-          reservation.id === reservationId
-            ? { ...reservation, status: updatedReservation.status }
-            : reservation
-        )
-      );
-    } catch (error) {
-      console.error('Error updating reservation status:', error);
-    }
-  };
+    },
+    [session?.token, setReservations]
+  );
 
   return (
     <PageContainer scrollable>

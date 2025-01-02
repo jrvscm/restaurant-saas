@@ -45,6 +45,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as React from 'react';
 import { Icons } from '../icons';
+import { open } from 'fs/promises';
 
 export const company = {
   name: 'Acme Inc',
@@ -53,10 +54,21 @@ export const company = {
 };
 
 export default function AppSidebar() {
-  const { session } = useSession();
+  const { session, loading } = useSession();
   const pathname = usePathname();
   const logout = useLogout();
+  const [openCollapsibles, setOpenCollapsibles] = React.useState<string[]>([]);
 
+  React.useEffect(() => {
+    const openItems = navItems
+      .filter(
+        (item) => item?.items?.some((subItem) => subItem.url === pathname)
+      )
+      .map((item) => item.title.toLowerCase());
+    setOpenCollapsibles(openItems);
+  }, [pathname]);
+
+  if (!session || loading || !openCollapsibles) return;
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -80,13 +92,16 @@ export default function AppSidebar() {
                 <Collapsible
                   key={item.title}
                   asChild
-                  defaultOpen={item.isActive}
+                  defaultOpen={openCollapsibles.includes(
+                    item.title.toLowerCase()
+                  )}
                   className="group/collapsible"
                 >
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton
                         tooltip={item.title}
+                        logger={item.url}
                         isActive={pathname === item.url}
                       >
                         {item.icon && <Icon />}
@@ -188,22 +203,6 @@ export default function AppSidebar() {
                     </div>
                   </div>
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <BadgeCheck />
-                    Account
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <CreditCard />
-                    Billing
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Bell />
-                    Notifications
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout}>
                   <LogOut />
