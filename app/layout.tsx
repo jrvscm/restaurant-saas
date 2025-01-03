@@ -29,7 +29,7 @@ export default function RootLayout({
       <body>
         <NextTopLoader showSpinner={false} />
         <Providers session={session}>
-          <Toaster />
+          <Toaster position="top-right" />
           {children}
         </Providers>
       </body>

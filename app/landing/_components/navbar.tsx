@@ -5,43 +5,43 @@ import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
-  NavigationMenuList,
+  NavigationMenuList
 } from '@/components/ui/navigation-menu';
 import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 export const Navbar = () => {
   const navigationItems = [
     {
       title: 'Home',
       href: '/',
-      description: '',
+      description: ''
     },
     {
       title: 'About Us',
       href: '/about',
-      description: '',
+      description: ''
     },
     {
       title: 'Menu',
       href: '/menu',
-      description: '',
+      description: ''
     },
     {
       title: 'Contact',
       href: '/contact',
-      description: '',
-    },
+      description: ''
+    }
   ];
 
   const [isOpen, setOpen] = useState(false);
   const [isScrolled, setScrolled] = useState(false);
 
-  // Detect scroll behavior
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50); // Shrink logo after scrolling 50px
+      setScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
     return () => {
@@ -51,11 +51,23 @@ export const Navbar = () => {
 
   return (
     <header
-      className={`fixed left-0 top-0 right-0 z-40 w-full transition-all duration-300 border-b border-primary ${
-        isScrolled ? 'lg:py-2 lg:bg-black/60 lg:backdrop-blur-2xl' : 'lg:py-4'
+      className={`fixed left-0 right-0 top-0 z-40 w-full border-b border-primary transition-all duration-300 ${
+        isScrolled ? 'lg:bg-black/60 lg:py-2 lg:backdrop-blur-2xl' : 'lg:py-4'
       }`}
     >
-      <div className="container relative mx-auto flex items-center justify-between gap-4">
+      <div className="container relative mx-auto flex items-center justify-start gap-4">
+        {/* Logo Section */}
+        <div className="flex hidden items-center justify-center lg:block">
+          <Link href="/">
+            <img
+              src="//images.ctfassets.net/dho5s3z0t7k5/39JXwo33YwseydUU1Izzdt/5e744498e883e3837ca91c48cd808c39/10219-removebg-preview.png"
+              alt="Pizza Slice Logo"
+              className={`transition-all duration-300 ${
+                isScrolled ? 'lg:h-12' : 'lg:h-24'
+              } w-auto object-contain`}
+            />
+          </Link>
+        </div>
         {/* Navigation Menu */}
         <div className="hidden gap-4 lg:flex">
           <NavigationMenu>
@@ -63,7 +75,12 @@ export const Navbar = () => {
               {navigationItems.map((item) => (
                 <NavigationMenuItem key={item.title}>
                   <NavigationMenuLink>
-                    <Button variant="ghostMuted">{item.title}</Button>
+                    <Button
+                      onClick={() => toast.success('Site is in demo mode')}
+                      variant="ghostMuted"
+                    >
+                      {item.title}
+                    </Button>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
               ))}
@@ -71,30 +88,14 @@ export const Navbar = () => {
           </NavigationMenu>
         </div>
 
-        {/* Logo Section */}
-        <div className="flex hidden items-center justify-center lg:block">
-          <Link href="/">
-            <img
-              src="//images.ctfassets.net/dho5s3z0t7k5/58Ryuo5v7tB18ttCyLEl3l/3483fa8b81ab779f5f897923a9339908/s917989311326017337_p5_i3_w640-removebg-preview.png"
-              alt="Pizza Carrello Logo"
-              className={`transition-all duration-300 ${
-                isScrolled ? 'lg:h-12' : 'lg:h-24'
-              } w-auto object-contain`}
-            />
-          </Link>
-        </div>
-
         {/* Right Buttons */}
-        <div className="flex justify-end gap-4 hidden lg:block">
-          <Button
-            variant="ghostMuted"
-            className="hidden lg:inline"
-            asChild // Allows Button to inherit the behavior of the wrapped element
-          >
-            <a href="tel:+13073631743">(307) 363-1PIE</a>
+        <div className="ml-auto flex hidden gap-4 lg:block">
+          <Button variant="ghostMuted" className="hidden lg:inline" asChild>
+            <a href="tel:+13073631743">(333) PIZZA-PIE</a>
           </Button>
-          <Button variant="ghostMuted">Sign in</Button>
-          <Button>Get Started</Button>
+          <Link href={'/signin'}>
+            <Button>Sign in</Button>
+          </Link>
         </div>
 
         {/* Mobile Menu */}
@@ -104,8 +105,8 @@ export const Navbar = () => {
             {/* Logo on the left */}
             <Link href="/" className="flex items-center">
               <img
-                src="//images.ctfassets.net/dho5s3z0t7k5/58Ryuo5v7tB18ttCyLEl3l/3483fa8b81ab779f5f897923a9339908/s917989311326017337_p5_i3_w640-removebg-preview.png"
-                alt="Pizza Carrello Logo"
+                src="//images.ctfassets.net/dho5s3z0t7k5/39JXwo33YwseydUU1Izzdt/5e744498e883e3837ca91c48cd808c39/10219-removebg-preview.png"
+                alt="Pizza slice Logo"
                 className="h-12 w-auto object-contain"
               />
             </Link>
@@ -136,9 +137,13 @@ export const Navbar = () => {
               {navigationItems.map((item) => (
                 <Link
                   key={item.title}
-                  href={item.href}
+                  // href={item.href}
+                  href={''}
                   className="text-lg font-medium text-white transition-colors hover:text-primary"
-                  onClick={() => setOpen(false)} // Close menu when clicked
+                  onClick={() => {
+                    toast.success('Site is in demo mode');
+                    setOpen(false);
+                  }} // Close menu when clicked
                 >
                   {item.title}
                 </Link>
@@ -147,16 +152,20 @@ export const Navbar = () => {
 
             {/* Buttons at the bottom */}
             <div className="flex flex-col gap-4">
-              <Button
+              {/* <Button
                 variant="outline"
                 className="w-full bg-transparent text-primary-foreground border-primary focus:bg-transparent"
                 onClick={() => setOpen(false)}
               >
                 Sign in
-              </Button>
-              <Button className="w-full" onClick={() => setOpen(false)}>
-                Get started
-              </Button>
+              </Button> */}
+              {
+                <Link href="/signin">
+                  <Button className="w-full" onClick={() => setOpen(false)}>
+                    Sign In
+                  </Button>
+                </Link>
+              }
             </div>
           </div>
         </div>

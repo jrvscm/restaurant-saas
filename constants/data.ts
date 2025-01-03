@@ -164,11 +164,24 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Reservations',
-    url: '/dashboard/reservation',
+    url: null,
     icon: 'user',
-    shortcut: ['e', 'e'],
+    shortcut: ['a', 'a'],
     isActive: false,
-    items: [] // No child items
+    items: [
+      {
+        title: 'Live',
+        url: '/dashboard/reservation',
+        icon: 'archive',
+        shortcut: ['z', 'z']
+      },
+      {
+        title: 'Archive',
+        url: '/dashboard/reservation/archive',
+        icon: 'archive',
+        shortcut: ['y', 'y']
+      }
+    ]
   }
   // {
   //   title: 'Product',

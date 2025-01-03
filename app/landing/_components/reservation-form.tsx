@@ -22,7 +22,7 @@ import { convertTo24HourFormat } from '../../../lib/convertTime';
 
 export const ReservationForm = () => {
   const [date, setDate] = React.useState<Date | null>(null);
-  const [time, setTime] = React.useState<string>('12:00 PM');
+  const [time, setTime] = React.useState<string>('');
   const [guests, setGuests] = React.useState<string>('1');
   const [phoneNumber, setPhoneNumber] = React.useState<string>('');
   const [availability, setAvailability] = React.useState<any[]>([]);
@@ -206,9 +206,7 @@ export const ReservationForm = () => {
       }
 
       const reservation = await response.json();
-      toast.success(
-        "Reservation created successfully! we'll text you when your reservation is confirmed."
-      );
+      toast.success("We'll text you when your reservation is confirmed.");
       setDate(null);
       setTime('12:00 PM');
       setGuests('1');
@@ -285,9 +283,18 @@ export const ReservationForm = () => {
             <Select onValueChange={(value) => setTime(value)} value={time}>
               <SelectTrigger className="justify-space-between flex h-10 w-full items-center rounded-md border-secondary-foreground pl-10 hover:shadow-md focus:outline-none focus:ring-secondary-foreground">
                 <Clock className="absolute left-3 h-5 w-5" />
-                <SelectValue placeholder="Select a time" />
+                {!time ? (
+                  <span className="mr-auto">Select a time</span>
+                ) : (
+                  <span className="mr-auto">{time}</span>
+                )}
               </SelectTrigger>
               <SelectContent className="bg-secondary-foreground text-primary-foreground">
+                {!availableTimes?.length && (
+                  <SelectItem>
+                    Select a date to generate available times
+                  </SelectItem>
+                )}
                 {availableTimes.map((time) => (
                   <SelectItem key={time} value={time}>
                     {time}

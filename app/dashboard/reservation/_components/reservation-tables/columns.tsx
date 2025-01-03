@@ -7,5 +7,7 @@ export const columns: ColumnDef<any>[] = [
   { accessorKey: 'time', header: 'Time' },
   { accessorKey: 'guests', header: 'Guests' },
   { accessorKey: 'status', header: 'Status' },
-  { accessorKey: 'notes', header: 'Notes' },
+  { accessorKey: 'phoneNumber', header: 'Phone' },
+  { accessorKey: 'contactName', header: 'Name' },
+  { accessorKey: 'notes', header: 'Notes' }
 ];

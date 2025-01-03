@@ -1,6 +1,7 @@
 import {
   AlertTriangle,
   ArrowRight,
+  Archive,
   Calendar,
   Check,
   ChevronLeft,
@@ -38,6 +39,7 @@ import {
 export type Icon = LucideIcon;
 
 export const Icons = {
+  archive: Archive,
   calendar: Calendar,
   list: List,
   dashboard: LayoutDashboardIcon,

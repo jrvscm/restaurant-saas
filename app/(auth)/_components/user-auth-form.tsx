@@ -95,7 +95,7 @@ export default function UserAuthForm({ isSignUp }: { isSignUp: boolean }) {
                   <FormControl>
                     <Input
                       type="text"
-                      placeholder="Example Organization"
+                      placeholder="Company Name"
                       disabled={loading}
                       {...field}
                     />

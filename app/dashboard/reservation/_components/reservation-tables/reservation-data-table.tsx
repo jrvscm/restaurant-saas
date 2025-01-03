@@ -31,17 +31,18 @@ import {
 } from '@tanstack/react-table';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { parseAsInteger, useQueryState } from 'nuqs';
+import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 // Define how to style different reservation statuses
 const getStatusStyle = (status: string) => {
   switch (status) {
     case 'confirmed':
-      return 'bg-muted foreground:muted-foreground'; // Pulsing muted color for confirmed
+      return 'bg-confirmed text-muted-foreground'; // Pulsing muted color for confirmed
     case 'pending':
-      return 'bg-primary foreground:primary-foreground animate-pulse'; // Primary color for pending
+      return 'bg-primary text-primary-foreground animate-pulse'; // Primary color for pending
     case 'canceled':
-      return 'bg-destructive foreground:destructive-foreground'; // Destructive color for canceled
+      return 'bg-destructive-20 text-muted-foreground'; // Destructive color for canceled
     default:
       return '';
   }
@@ -54,6 +55,7 @@ interface ReservationDataTableProps<TData, TValue> {
   pageSizeOptions?: number[];
   onStatusChange: (id: string, status: string) => void;
   fetchReservations: () => void;
+  handleArchive: (id: string) => void;
 }
 
 // Helper function to convert time to 12-hour AM/PM format
@@ -73,8 +75,10 @@ export function ReservationDataTable<TData, TValue>({
   totalItems,
   pageSizeOptions = [10, 20, 30, 40, 50],
   onStatusChange,
-  fetchReservations
+  fetchReservations,
+  handleArchive
 }: ReservationDataTableProps<TData, TValue>) {
+  const pathname = usePathname();
   const [currentPage, setCurrentPage] = useQueryState(
     'page',
     parseAsInteger.withOptions({ shallow: false }).withDefault(1)
@@ -168,24 +172,39 @@ export function ReservationDataTable<TData, TValue>({
                       </TableCell>
                     );
                   })}
-                  <TableCell>
-                    <Select
-                      value={row.original.status}
-                      onValueChange={(newStatus) => {
-                        // Handle status change and trigger callback
-                        onStatusChange(row.original.id, newStatus);
-                      }}
-                    >
-                      <SelectTrigger>
-                        <SelectValue>{row.original.status}</SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="confirmed">Confirmed</SelectItem>
-                        <SelectItem value="canceled">Canceled</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
+                  {!pathname.includes('archive') && (
+                    <TableCell>
+                      <Select
+                        value={row.original.status}
+                        onValueChange={(newStatus) => {
+                          // Handle status change and trigger callback
+                          onStatusChange(row.original.id, newStatus);
+                        }}
+                      >
+                        <SelectTrigger>
+                          <SelectValue>{row.original.status}</SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="confirmed">Confirmed</SelectItem>
+                          <SelectItem value="canceled">Canceled</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                  )}
+
+                  {!pathname.includes('archive') && (
+                    <TableCell>
+                      {row.original.status != 'pending' && (
+                        <Button
+                          className="bg-destructive-20 text-muted-foreground hover:bg-destructive-40"
+                          onClick={() => handleArchive(row.original.id)}
+                        >
+                          Archive
+                        </Button>
+                      )}
+                    </TableCell>
+                  )}
                 </TableRow>
               ))
             ) : (

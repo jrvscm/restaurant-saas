@@ -21,7 +21,6 @@ export const operatingHoursReducer = (state, action) => {
 
     case 'UPDATE_START_TIME':
       const updatedStartState = { ...state };
-      console.log(state);
       if (updatedStartState[action.day]) {
         updatedStartState[action.day].startTime = action.value;
       }
