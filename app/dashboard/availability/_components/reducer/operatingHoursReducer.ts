@@ -1,4 +1,22 @@
-export const operatingHoursReducer = (state, action) => {
+type OperatingHoursAction =
+  | { type: 'SET_AVAILABILITY'; value: OperatingHoursState }
+  | { type: 'TOGGLE_DAY'; day: string }
+  | { type: 'UPDATE_START_TIME'; day: string; value: string }
+  | { type: 'UPDATE_END_TIME'; day: string; value: string };
+
+type OperatingHour = {
+  startTime: string;
+  endTime: string;
+};
+
+type OperatingHoursState = {
+  [day: string]: OperatingHour;
+};
+
+export const operatingHoursReducer = (
+  state: OperatingHoursState,
+  action: OperatingHoursAction
+): OperatingHoursState => {
   switch (action.type) {
     case 'SET_AVAILABILITY':
       return { ...action.value };

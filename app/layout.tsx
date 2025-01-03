@@ -23,12 +23,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = headers().get('X-Session'); // Get theme from middleware
   return (
     <html lang="en" className={`${lato.className}`} suppressHydrationWarning>
       <body>
         <NextTopLoader showSpinner={false} />
-        <Providers session={session}>
+        <Providers>
           <Toaster position="top-right" />
           {children}
         </Providers>

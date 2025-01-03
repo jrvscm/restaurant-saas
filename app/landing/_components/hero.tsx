@@ -91,7 +91,7 @@ export const Hero = () => {
                 </h2>
                 <p className="hidden rounded-md py-2 text-center font-serif text-base leading-relaxed tracking-tight text-secondary-foreground md:block md:text-base lg:text-lg">
                   Treat your friends and family to the perfect gift. Purchase a
-                  Pizza Slice gift card today and make someone's day extra
+                  Pizza Slice gift card today and make someone&apos;s day extra
                   special!
                 </p>
                 <div className="flex justify-center">

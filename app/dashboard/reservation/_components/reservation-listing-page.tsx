@@ -12,16 +12,8 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { useSession } from '@/hooks/use-session';
 import { usePathname } from 'next/navigation';
-import { toast } from 'sonner'; // Import toast
-
-type Reservation = {
-  id: string;
-  date: string;
-  time: string;
-  guests: number;
-  status: string;
-  notes?: string;
-};
+import { toast } from 'sonner';
+import type { Reservation } from '../types';
 
 export default function ReservationListingPage() {
   const [reservations, setReservations] = useState<Reservation[]>([]);
@@ -39,7 +31,7 @@ export default function ReservationListingPage() {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${session.token}` // Ensure token is valid
+              Authorization: `Bearer ${session?.token}` // Ensure token is valid
             },
             credentials: 'include' // Verify if necessary
           }
@@ -75,7 +67,7 @@ export default function ReservationListingPage() {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${session.token}`
+            Authorization: `Bearer ${session?.token || ''}`
           },
           credentials: 'include'
         }
@@ -133,7 +125,7 @@ export default function ReservationListingPage() {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${session.token}`
+              Authorization: `Bearer ${session?.token || ''}`
             },
             body: JSON.stringify({ status: newStatus })
           }

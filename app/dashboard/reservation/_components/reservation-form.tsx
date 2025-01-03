@@ -76,7 +76,7 @@ export default function ReservationForm() {
 
   const [availableTimes, setAvailableTimes] = React.useState<string[]>([]);
   const [availability, setAvailability] = React.useState<any[]>([]);
-  const [date, setDate] = React.useState<Date | null>(null); // Local state for the date
+  const [date, setDate] = React.useState<Date | null>(null);
 
   // Fetch availability data for the organization
   React.useEffect(() => {
@@ -100,7 +100,7 @@ export default function ReservationForm() {
         }
 
         const data = await response.json();
-        setAvailability(data); // Storing the fetched availability data
+        setAvailability(data);
       } catch (error) {
         console.error('Error fetching availability:', error);
         toast.error('Error fetching availability');
@@ -208,7 +208,7 @@ export default function ReservationForm() {
     setAvailableTimes(times); // Set the generated time slots in state
   };
 
-  const handleDateChange = (selectedDate: Date | null) => {
+  const handleDateChange = (selectedDate: Date | undefined) => {
     if (selectedDate) {
       setDate(selectedDate); // Update the local state
       form.setValue('date', selectedDate.toISOString().split('T')[0]); // Sync form value
@@ -296,7 +296,7 @@ export default function ReservationForm() {
                         <PopoverContent className="w-auto">
                           <Calendar
                             mode="single"
-                            selected={date}
+                            selected={date || undefined}
                             onSelect={handleDateChange} // Use the handleDateChange function
                           />
                         </PopoverContent>
@@ -327,7 +327,7 @@ export default function ReservationForm() {
                       </FormControl>
                       <SelectContent>
                         {!availableTimes?.length && (
-                          <SelectItem>
+                          <SelectItem value="no-times">
                             Select a date to generate available times
                           </SelectItem>
                         )}

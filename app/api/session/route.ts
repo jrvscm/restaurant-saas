@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { decodeJwt } from '@/lib/utils'; // Adjust the path based on where the function is located
+import { decodeJwt } from '@/lib/utils'; //
 
 export async function GET(req: Request) {
   const cookieHeader = req.headers.get('cookie');
@@ -23,7 +23,11 @@ export async function GET(req: Request) {
     // Return the decoded user object
     return NextResponse.json({ user, token });
   } catch (error) {
-    console.error('Error decoding token:', error.message);
+    if (error instanceof Error) {
+      console.error('Error decoding token:', error.message);
+    } else {
+      console.error(error);
+    }
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 }

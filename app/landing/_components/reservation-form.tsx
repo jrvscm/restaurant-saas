@@ -84,20 +84,18 @@ export const ReservationForm = () => {
   const generateTimeSlots = (
     startTime: string,
     endTime: string,
-    selectedDate: Date | null,
+    selectedDate: string,
     organizationAvailability: any
   ) => {
     if (!selectedDate || !organizationAvailability) return;
-
     const times: string[] = [];
 
     // Get the current date
     const today = new Date();
 
     // Get the day of the week for today and selected date
-    const selectedDayOfWeek = selectedDate.toLocaleString('en-us', {
-      weekday: 'long'
-    });
+    const selectedDayOfWeek = selectedDate;
+
     const todayDayOfWeek = today.toLocaleString('en-us', { weekday: 'long' });
 
     // Check the organization's availability for the selected day
@@ -213,7 +211,11 @@ export const ReservationForm = () => {
       setPhoneNumber('');
       setName('');
     } catch (error) {
-      toast.error(error.message || 'Something went wrong');
+      if (error instanceof Error) {
+        toast.error(error.message || 'Something went wrong');
+      } else {
+        toast.error('An unexpected error occurred');
+      }
     }
   };
 
@@ -270,8 +272,10 @@ export const ReservationForm = () => {
               <PopoverContent className="w-auto bg-secondary-foreground p-2 text-primary-foreground">
                 <Calendar
                   mode="single"
-                  selected={date}
-                  onSelect={setDate}
+                  selected={date || undefined}
+                  onSelect={(selectedDate?: Date) =>
+                    setDate(selectedDate || null)
+                  }
                   className="bg-secondary-foreground"
                 />
               </PopoverContent>
@@ -291,7 +295,7 @@ export const ReservationForm = () => {
               </SelectTrigger>
               <SelectContent className="bg-secondary-foreground text-primary-foreground">
                 {!availableTimes?.length && (
-                  <SelectItem>
+                  <SelectItem value="placeholder">
                     Select a date to generate available times
                   </SelectItem>
                 )}

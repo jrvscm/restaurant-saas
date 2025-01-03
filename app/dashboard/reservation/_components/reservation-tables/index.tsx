@@ -12,9 +12,9 @@ export default function ReservationTable({
   handleArchive
 }: {
   data: any[];
-  onStatusChange: (reservationId: string, newStatus: string) => void;
-  fetchReservations: () => void;
-  handleArchive: (id: string) => void;
+  onStatusChange?: (reservationId: string, newStatus: string) => void;
+  fetchReservations?: () => void;
+  handleArchive?: (id: string) => void;
 }) {
   const { searchQuery, setSearchQuery, setPage } = useReservationTableFilters();
 
@@ -32,9 +32,9 @@ export default function ReservationTable({
         columns={columns}
         data={data}
         totalItems={data.length}
-        onStatusChange={onStatusChange}
-        fetchReservations={fetchReservations}
-        handleArchive={handleArchive}
+        onStatusChange={onStatusChange || (() => {})}
+        fetchReservations={fetchReservations || (() => {})}
+        handleArchive={handleArchive || (() => {})}
       />
     </div>
   );

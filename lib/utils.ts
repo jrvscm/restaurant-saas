@@ -46,7 +46,7 @@ export function formatBytes(
   }`;
 }
 
-export function decodeJwt(token) {
+export function decodeJwt(token: string) {
   try {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -58,7 +58,11 @@ export function decodeJwt(token) {
     );
     return JSON.parse(jsonPayload);
   } catch (error) {
-    console.error('Failed to decode token:', error.message);
+    if (error instanceof Error) {
+      console.error('Failed to decode token:', error.message);
+    } else {
+      console.log(error);
+    }
     return null;
   }
 }

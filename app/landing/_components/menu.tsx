@@ -19,7 +19,9 @@ export const Menu = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const menuSection = menuSectionRef.current;
+      const menuSection = document.getElementById(
+        'menu-section'
+      ) as HTMLElement;
       if (!menuSection) return;
 
       const menuTop = menuSection.getBoundingClientRect().top;
@@ -36,7 +38,28 @@ export const Menu = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const menuData = {
+  // Define types
+  interface MenuOption {
+    description: string;
+    price?: number | { personal: number; family: number };
+  }
+
+  interface MenuItem {
+    name: string;
+    description?: string;
+    price?: number | { personal: number; family: number };
+    options?: MenuOption[];
+    notes?: string;
+    add_ons?: MenuOption[];
+  }
+
+  type MenuData = Record<string, MenuItem[]>;
+
+  interface CategoryInfo {
+    description?: string;
+  }
+
+  const menuData: MenuData = {
     appetizers: [
       {
         name: 'Fogatza Dipping Bread',
@@ -242,7 +265,7 @@ export const Menu = () => {
     ]
   };
 
-  const categoryInfo = {
+  const categoryInfo: Record<keyof typeof menuData, CategoryInfo> = {
     appetizers: {
       description: 'Start your meal off right with our delicious appetizers!'
     },
@@ -260,6 +283,9 @@ export const Menu = () => {
         '9” Gluten Free crust available, add $3.\n9" Personal Size / 14" Family Size.\nHalf & half pizzas are priced as two small pizzas.'
     }
   };
+
+  // Ensure `category` is typed as a key of `categoryInfo`
+  type CategoryKey = keyof typeof categoryInfo;
 
   return (
     <section className="relative min-h-screen w-full">

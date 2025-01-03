@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Metadata } from './next';
-import Link from 'next/link';
+import { Metadata } from 'next';
 import UserAuthForm from './user-auth-form';
 
 export const metadata: Metadata = {
