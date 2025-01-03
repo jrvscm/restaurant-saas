@@ -87,7 +87,6 @@ export default function ReservationListingPage() {
 
       const data: Reservation[] = await response.json();
       setReservations(data);
-      toast.success('Reservations fetched successfully!');
     } catch (error) {
       console.error('Error fetching reservations:', error);
       toast.error('Failed to fetch reservations.');

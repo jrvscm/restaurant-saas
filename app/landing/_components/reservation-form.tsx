@@ -206,9 +206,7 @@ export const ReservationForm = () => {
       }
 
       const reservation = await response.json();
-      toast.success(
-        "Reservation created successfully! we'll text you when your reservation is confirmed."
-      );
+      toast.success("We'll text you when your reservation is confirmed.");
       setDate(null);
       setTime('12:00 PM');
       setGuests('1');

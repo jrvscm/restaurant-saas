@@ -1,19 +1,23 @@
-
-'use client'
+'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent
+} from '@/components/ui/accordion';
 import { Icon } from '@/components/custom-icons';
 import { ReservationForm } from './reservation-form';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 export const Menu = () => {
   const menuSectionRef = useRef(null);
   const [isSticky, setIsSticky] = useState(false);
 
   useEffect(() => {
-    
     const handleScroll = () => {
       const menuSection = menuSectionRef.current;
       if (!menuSection) return;
@@ -63,7 +67,7 @@ export const Menu = () => {
         name: 'Wood-Fired Wings',
         description:
           'Choose one of our house-made dry rubs or sauces: Dry Rub, Dill Pickle Dry Rub, Carrello Buffalo Sauce, Our house-made BBQ sauce, or Chipotle Raspberry sauce.',
-        price: { personal: 12, family: 18 },
+        price: { personal: 12, family: 18 }
       },
       {
         name: 'Caprese Salad',
@@ -133,8 +137,7 @@ export const Menu = () => {
     pizzas: [
       {
         name: 'Classic Cheese',
-        description:
-        'Our classic rendition.',
+        description: 'Our classic rendition.',
         price: { personal: 7, family: 13 }
       },
       {
@@ -241,21 +244,21 @@ export const Menu = () => {
 
   const categoryInfo = {
     appetizers: {
-      description: 'Start your meal off right with our delicious appetizers!',
+      description: 'Start your meal off right with our delicious appetizers!'
     },
     stuffed_pita_wraps: {
       description: 'Ask for a house-made pickle for an additional $.50!'
     },
     wood_fired_pastas: {
-      description: 'We make our own rotini noodles from scratch daily with 100% semolina flour! All pastas are served with a side of our focaccia bread.'
+      description:
+        'We make our own rotini noodles from scratch daily with 100% semolina flour! All pastas are served with a side of our focaccia bread.'
     },
-    rice_bowls: {
-    },
-    desserts: {
-    },
+    rice_bowls: {},
+    desserts: {},
     pizzas: {
-      description: '9” Gluten Free crust available, add $3.\n9" Personal Size / 14" Family Size.\nHalf & half pizzas are priced as two small pizzas.',
-    },
+      description:
+        '9” Gluten Free crust available, add $3.\n9" Personal Size / 14" Family Size.\nHalf & half pizzas are priced as two small pizzas.'
+    }
   };
 
   return (
@@ -265,63 +268,88 @@ export const Menu = () => {
         <ReservationForm />
       </div>
 
-      <div className="
-        relative min-h-[50vh] md:min-h-[80vh] 
-        bg-rewards-image bg-center bg-cover 
-        h-full
-        flex flex-col items-center justify-center
+      <div
+        className="
+        relative flex h-full 
+        min-h-[50vh] flex-col items-center 
+        justify-center
+        bg-rewards-image bg-cover bg-center md:min-h-[80vh]
         "
       >
-        <Icon name="ribbon" className="
-          animate-fade-in
-          block absolute top-[40px] md:top-[80px] left-0 
-          h-auto md:h-[30%] 
-          w-[80%] md:w-auto
-        " />
+        <Icon
+          name="ribbon"
+          className="
+          absolute
+          left-0 top-[40px] block h-auto w-[80%] 
+          animate-fade-in md:top-[80px] 
+          md:h-[30%] md:w-auto
+        "
+        />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 min-h-[50vh] md:min-h-[80vh]">
-          <div className="w-full bg-black/75 md:bg-transparent min-h-[19vh]">
-          </div>
+        <div className="grid min-h-[50vh] grid-cols-1 sm:grid-cols-2 md:min-h-[80vh]">
+          <div className="min-h-[19vh] w-full bg-black/75 md:bg-transparent"></div>
 
-          <div className="
-            animate-fade-in 
-            flex flex-col gap-8 items-center justify-center
-            bg-black/75 px-8 pt-8 pb-16
-            text-white md:py-12 lg:px-16 lg:py-16">
+          <div
+            className="
+            flex 
+            animate-fade-in flex-col items-center justify-center gap-8
+            bg-black/75 px-8 pb-16 pt-8
+            text-white md:py-12 lg:px-16 lg:py-16"
+          >
             <Icon name="pizza" className="text-secondary" />
-            <h2 className="font-logo text-2xl md:text-3xl text-center">Sign up for our rewards program!</h2>
-            <p className="font-serif text-base md:text-xl text-center">
-              Sign up for our rewards program and get exclusive offers and discounts.
-              For every $1 dollar you spend, earn 5 rewards points that you can redeem
-              for items in our store!
+            <h2 className="text-center font-logo text-2xl md:text-3xl">
+              Sign up for our rewards program!
+            </h2>
+            <p className="text-center font-serif text-base md:text-xl">
+              Sign up for our rewards program and get exclusive offers and
+              discounts. For every $1 dollar you spend, earn 5 rewards points
+              that you can redeem for items in our store!
             </p>
-            <Button className="
-              w-full md:w-[200px]
-              bg-secondary text-secondary-foreground 
-              hover:text-secondary-foreground hover:bg-secondary-95
-            ">Sign Up!</Button>
+            <Button
+              onClick={() => toast.success('Site is in demo mode')}
+              className="
+              w-full bg-secondary
+              text-secondary-foreground hover:bg-secondary-95 
+              hover:text-secondary-foreground md:w-[200px]
+            "
+            >
+              Sign Up!
+            </Button>
           </div>
         </div>
       </div>
 
-
-      <div ref={menuSectionRef} className={`relative z-10 mx-auto`}>
-        <div className={`relative pb-8 pt-8 text-center bg-gray-600 bg-secondary
-          ${isSticky ? 'static lg:fixed lg:top-[64px] right-0 left-0 z-20 shadow-md' : ''}
-        `}>
-          <Icon name="curlyLeft" className="
-            text-primary 
-            absolute
-            bottom-[-5px] left-[24px]
+      <div id="menu" ref={menuSectionRef} className={`relative z-10 mx-auto`}>
+        <div
+          className={`relative bg-gray-600 bg-secondary pb-8 pt-8 text-center
+          ${
+            isSticky
+              ? 'static left-0 right-0 z-20 shadow-md lg:fixed lg:top-[64px]'
+              : ''
+          }
+        `}
+        >
+          <Icon
+            name="curlyLeft"
+            className="
+            absolute 
+            bottom-[-5px]
+            left-[24px] rotate-[-30deg]
+            text-primary
             md:left-[3rem]
-            rotate-[-30deg]
-            " />
-          <Icon name="curlyright" className="
-            text-primary absolute 
-            top-[10px] right-[24px] 
-            md:right-[3rem] md:top-[1rem]
-            rotate-[-40deg]" />
-          <h1 className="font-logo text-4xl text-secondary-foreground pb-6">Our Menu</h1>
+            "
+          />
+          <Icon
+            name="curlyright"
+            className="
+            absolute right-[24px] 
+            top-[10px] rotate-[-40deg] 
+            text-primary md:right-[3rem]
+            md:top-[1rem]"
+          />
+          <h1 className="pb-6 font-logo text-4xl text-secondary-foreground">
+            Our Menu
+          </h1>
           <p className="font-serif text-lg text-secondary-foreground">
             Explore our handcrafted dishes made with the finest ingredients!
           </p>
@@ -330,51 +358,65 @@ export const Menu = () => {
         {/* Tabs for larger screens */}
         <div className={`hidden lg:block`}>
           <Tabs className={`w-full`} defaultValue="pizzas">
-            <div className={`${
-              isSticky ? 'fixed lg:top-[220px] left-0 right-0 z-20 text-secondary shadow-md' : ''
-            }`}>
-              <TabsList className={`rounded-tr-none rounded-tl-none rounded-br-none rounded-bl-none flex justify-center space-x-2 bg-secondary-foreground shadow-md z-10`}>
-              {Object.keys(menuData).map((category) => (
-                <TabsTrigger
-                key={category}
-                value={category}
-                className="
-                  z-10 relative px-6 py-3 text-lg font-bold text-white uppercase transition-all 
-                  hover:bg-secondary hover:text-secondary-foreground border border-transparent hover:border-secondary-foreground focus:outline-none hover:shadow-md
-                  data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground data-[state=active]:shadow-md
-                  data-[state=active]:border data-[state=active]:border-secondary-foreground
-                "
+            <div
+              className={`${
+                isSticky
+                  ? 'fixed left-0 right-0 z-20 text-secondary shadow-md lg:top-[220px]'
+                  : ''
+              }`}
+            >
+              <TabsList
+                className={`z-10 flex justify-center space-x-2 rounded-bl-none rounded-br-none rounded-tl-none rounded-tr-none bg-secondary-foreground shadow-md`}
               >
-                {category.replace(/_/g, ' ').toUpperCase()}
-              </TabsTrigger>
-              ))}
-            </TabsList>
+                {Object.keys(menuData).map((category) => (
+                  <TabsTrigger
+                    key={category}
+                    value={category}
+                    className="
+                  relative z-10 border border-transparent px-6 py-3 text-lg font-bold uppercase 
+                  text-white transition-all hover:border-secondary-foreground hover:bg-secondary hover:text-secondary-foreground hover:shadow-md focus:outline-none
+                  data-[state=active]:border data-[state=active]:border-secondary-foreground data-[state=active]:bg-secondary
+                  data-[state=active]:text-secondary-foreground data-[state=active]:shadow-md
+                "
+                  >
+                    {category.replace(/_/g, ' ').toUpperCase()}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
             </div>
             {Object.entries(menuData).map(([category, items]) => (
-              <TabsContent key={category} value={category} className={`mt-0 ${
-                isSticky ? 'lg:pt-[192px]' : ''
-              }`}>
-                <div className="bg-paper-texture bg-center bg-cover p-6 mt-0">
-                  <div className="flex justify-evenly items-center px-6 py-6">
+              <TabsContent
+                key={category}
+                value={category}
+                className={`mt-0 ${isSticky ? 'lg:pt-[192px]' : ''}`}
+              >
+                <div className="mt-0 bg-paper-texture bg-cover bg-center p-6">
+                  <div className="flex items-center justify-evenly px-6 py-6">
                     <Icon name="pizzaSlice" className="text-primary" />
                     <Icon name="pizza" className="text-primary" />
                     <Icon name="pizzaSlice" className="text-primary" />
                     <Icon name="pizza" className="text-primary" />
                     <Icon name="pizzaSlice" className="text-primary" />
                   </div>
-                  <p className="max-w-[85%] text-lg text-gray-600 whitespace-pre-line mb-6 mx-auto">{categoryInfo[category]?.description}</p>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 animate-fade-in max-w-[85%] mx-auto">
+                  <p className="mx-auto mb-6 max-w-[85%] whitespace-pre-line text-lg text-gray-600">
+                    {categoryInfo[category]?.description}
+                  </p>
+                  <ul className="mx-auto grid max-w-[85%] animate-fade-in grid-cols-1 sm:grid-cols-2">
                     {items.map((item, index) => (
                       <li
                         key={index}
-                        className={`p-6 flex justify-between border-black/50 border-b relative ${
+                        className={`relative flex justify-between border-b border-black/15 p-6 ${
                           index < 2 ? 'border-t' : ''
                         } ${index % 2 === 0 ? 'sm:border-r' : ''}`}
                       >
-                        <div className="flex-grow max-w-[70%]">
-                          <h3 className="font-logo text-2xl text-black">{item.name}</h3>
+                        <div className="max-w-[70%] flex-grow">
+                          <h3 className="font-logo text-2xl text-black">
+                            {item.name}
+                          </h3>
                           {item.description && (
-                            <p className="text-lg mt-2 text-gray-600">{item.description}</p>
+                            <p className="mt-2 text-lg text-gray-600">
+                              {item.description}
+                            </p>
                           )}
                           {item.options && (
                             <ul className="mt-4 space-y-2">
@@ -387,13 +429,13 @@ export const Menu = () => {
                           )}
                         </div>
                         <div
-                          className="w-32 flex-shrink-0 flex flex-col items-center justify-center border-l-4"
+                          className="flex w-32 flex-shrink-0 flex-col items-center justify-center border-l-4"
                           style={{
                             borderLeft: '4px double hsl(10, 72%, 50%)',
-                            minHeight: '100%',
+                            minHeight: '100%'
                           }}
                         >
-                          <p className="text-lg font-semibold text-secondary-foreground text-center">
+                          <p className="text-center text-lg font-semibold text-secondary-foreground">
                             {item.price
                               ? typeof item.price === 'object'
                                 ? Object.values(item.price)
@@ -401,14 +443,16 @@ export const Menu = () => {
                                     .join(' / ')
                                 : `$${item.price}`
                               : item.options
-                              ? item.options.map((option) => `$${option.price || '-'}`).join(' / ')
+                              ? item.options
+                                  .map((option) => `$${option.price || '-'}`)
+                                  .join(' / ')
                               : 'Price unavailable'}
                           </p>
                         </div>
                       </li>
                     ))}
                   </ul>
-                  <div className="flex justify-evenly items-center mt-12">
+                  <div className="mt-12 flex items-center justify-evenly">
                     <Icon name="pizza" className="text-primary" />
                     <Icon name="pizzaSlice" className="text-primary" />
                     <Icon name="pizza" className="text-primary" />
@@ -425,30 +469,43 @@ export const Menu = () => {
         <div className="block w-full lg:hidden">
           <Accordion type="single" collapsible defaultValue="pizzas">
             {Object.entries(menuData).map(([category, items]) => (
-              <AccordionItem key={category} value={category} className="border-b border-secondary">
-                <AccordionTrigger className="text-lg font-bold text-white uppercase bg-secondary-foreground px-4 py-2">
+              <AccordionItem
+                key={category}
+                value={category}
+                className="border-b border-secondary"
+              >
+                <AccordionTrigger className="bg-secondary-foreground px-4 py-2 text-lg font-bold uppercase text-white">
                   {category.replace(/_/g, ' ').toUpperCase()}
                 </AccordionTrigger>
                 <AccordionContent className="pb-0">
                   <div className="bg-paper-texture">
-                    <p className="text-base text-gray-600 whitespace-pre-line mb-4 pl-4 pr-4 pt-4">
+                    <p className="mb-4 whitespace-pre-line pl-4 pr-4 pt-4 text-base text-gray-600">
                       {categoryInfo[category]?.description}
                     </p>
                     <ul className="grid grid-cols-1">
                       {items.map((item, index) => (
                         <li
                           key={index}
-                          className="p-4 flex justify-between border-secondary-foreground border-b"
+                          className={`${
+                            index === 0 ? 'border-t' : ''
+                          } flex justify-between border-b border-black/15 p-4`}
                         >
                           <div className="flex-grow pr-4">
-                            <h3 className="font-logo text-xl text-secondary-foreground">{item.name}</h3>
+                            <h3 className="font-logo text-xl text-secondary-foreground">
+                              {item.name}
+                            </h3>
                             {item.description && (
-                              <p className="text-base mt-2 text-gray-600">{item.description}</p>
+                              <p className="mt-2 text-base text-gray-600">
+                                {item.description}
+                              </p>
                             )}
                             {item.options && (
                               <ul className="mt-4 space-y-2">
                                 {item.options.map((option, i) => (
-                                  <li key={i} className="text-base text-gray-600">
+                                  <li
+                                    key={i}
+                                    className="text-base text-gray-600"
+                                  >
                                     <span>{option.description}</span>
                                   </li>
                                 ))}
@@ -456,13 +513,13 @@ export const Menu = () => {
                             )}
                           </div>
                           <div
-                            className="w-24 flex-shrink-0 flex flex-col items-center justify-center border-l-4"
+                            className="flex w-24 flex-shrink-0 flex-col items-center justify-center border-l-4"
                             style={{
                               borderLeft: '4px double hsl(10, 72%, 50%)',
-                              minHeight: '100%',
+                              minHeight: '100%'
                             }}
                           >
-                            <p className="text-base font-semibold text-secondary-foreground text-center">
+                            <p className="text-center text-base font-semibold text-secondary-foreground">
                               {item.price
                                 ? typeof item.price === 'object'
                                   ? Object.values(item.price)
@@ -470,7 +527,9 @@ export const Menu = () => {
                                       .join(' / ')
                                   : `$${item.price}`
                                 : item.options
-                                ? item.options.map((option) => `$${option.price || '-'}`).join(' / ')
+                                ? item.options
+                                    .map((option) => `$${option.price || '-'}`)
+                                    .join(' / ')
                                 : 'Price unavailable'}
                             </p>
                           </div>
@@ -482,7 +541,7 @@ export const Menu = () => {
               </AccordionItem>
             ))}
           </Accordion>
-        </div> 
+        </div>
       </div>
     </section>
   );

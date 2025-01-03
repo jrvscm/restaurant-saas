@@ -1,8 +1,19 @@
+'use client';
+
 import { MoveRight, Pizza } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/custom-icons';
+import { toast } from 'sonner';
 
 export const Hero = () => {
+  const handleMenuScroll = () => {
+    //TODO: make a ref work here
+    const menuElement = document.getElementById('menu');
+    if (menuElement) {
+      menuElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <>
       <section className="relative flex flex-col justify-between">
@@ -33,7 +44,7 @@ export const Hero = () => {
                   Wood is Good!
                 </h1>
                 <p className="mx-auto max-w-md rounded-md py-2 text-center font-serif text-sm leading-relaxed tracking-tight md:text-base lg:text-lg">
-                  At Pizza Carrello, all of our food is made with the most fresh
+                  At Pizza Slice, all of our food is made with the most fresh
                   and highest quality ingredients available, from our specialty
                   in-house artisan crust, to the wood we burn in our handmade
                   oven, to our ultra-simple and exquisite sauces, our passion
@@ -41,13 +52,18 @@ export const Hero = () => {
                 </p>
                 <div className="flex w-full flex-col items-center justify-center gap-4 md:flex-row">
                   <Button
+                    onClick={handleMenuScroll}
                     size="lg"
                     className="w-full gap-4 md:w-auto"
                     variant="ghostMuted"
                   >
                     Menu <Pizza className="h-4 w-4" />
                   </Button>
-                  <Button size="lg" className="w-full gap-4 md:w-auto border-secondary text-secondary-foreground bg-secondary hover:bg-secondary-95 hover:text-secondary-foreground">
+                  <Button
+                    onClick={() => toast.success('Site is in demo mode')}
+                    size="lg"
+                    className="w-full gap-4 border-secondary bg-secondary text-secondary-foreground hover:bg-secondary-95 hover:text-secondary-foreground md:w-auto"
+                  >
                     Order Now <MoveRight className="h-4 w-4" />
                   </Button>
                 </div>
@@ -66,20 +82,24 @@ export const Hero = () => {
                     lg:py-16
                     "
               >
-                <Icon name="pizzaSlice" className="text-secondary-foreground mx-auto" />
+                <Icon
+                  name="pizzaSlice"
+                  className="mx-auto text-secondary-foreground"
+                />
                 <h2 className="text-center font-logo text-2xl font-semibold text-secondary-foreground">
                   Give the Gift of Pizza!
                 </h2>
-                <p className="hidden rounded-md py-2 text-center font-serif text-base leading-relaxed tracking-tight md:block md:text-base lg:text-lg text-secondary-foreground">
+                <p className="hidden rounded-md py-2 text-center font-serif text-base leading-relaxed tracking-tight text-secondary-foreground md:block md:text-base lg:text-lg">
                   Treat your friends and family to the perfect gift. Purchase a
-                  Pizza Carrello gift card today and make someone's day extra
+                  Pizza Slice gift card today and make someone's day extra
                   special!
                 </p>
                 <div className="flex justify-center">
                   <Button
+                    onClick={() => toast.success('Site is in demo mode')}
                     variant="ghostMuted"
                     size="lg"
-                    className="w-full gap-4 md:w-auto text-secondary-foreground underline"
+                    className="w-full gap-4 text-secondary-foreground underline md:w-auto"
                   >
                     Buy Gift Card
                   </Button>

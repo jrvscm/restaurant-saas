@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import ThemeProvider from './ThemeToggle/theme-provider';
+import { toast } from 'sonner';
 
 export default function Providers({
   session,
@@ -16,8 +17,11 @@ export default function Providers({
   useEffect(() => {
     const isDashboard = pathname?.startsWith('/dashboard');
     const isVerification = pathname === '/verification';
+    const isSignin = pathname === '/signin';
     const theme =
-      isDashboard || isVerification ? 'theme-dashboard dark' : 'theme-landing';
+      isDashboard || isVerification || isSignin
+        ? 'theme-dashboard dark'
+        : 'theme-landing';
     document.documentElement.className = theme;
     setMounted(true);
   }, [pathname]);
