@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { decodeJwt } from '../lib/utils'; // Install with `npm install jwt-decode`
 
-interface User {
+export interface User {
   id: string;
   name: string;
   email: string;
@@ -12,7 +12,7 @@ interface User {
   status: string;
 }
 
-interface Session {
+export interface Session {
   user: User;
   token: string;
 }

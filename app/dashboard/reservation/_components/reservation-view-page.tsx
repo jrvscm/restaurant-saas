@@ -1,11 +1,7 @@
 import PageContainer from '@/components/layout/page-container';
 import ReservationForm from './reservation-form';
 
-export default function ReservationViewPage({
-  reservation
-}: {
-  reservation: any;
-}) {
+export default function ReservationViewPage() {
   return (
     <PageContainer>
       <ReservationForm />

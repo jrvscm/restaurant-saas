@@ -55,7 +55,7 @@ export default function OperatingHoursForm() {
   });
 
   // Convert 24-hour time to AM/PM format
-  const convertToAMPM = (time) => {
+  const convertToAMPM = (time: string) => {
     const [hour, minute] = time.split(':').map(Number);
     const isAM = hour < 12;
     const newHour = hour % 12 || 12;
@@ -112,12 +112,12 @@ export default function OperatingHoursForm() {
   }, [session, loading]);
 
   // Handle checkbox changes
-  const handleCheckboxChange = (day) => {
+  const handleCheckboxChange = (day: string) => {
     dispatch({ type: 'TOGGLE_DAY', day });
   };
 
   // Handle form submit
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: object) => {
     try {
       // Only send the days that are checked (present in weekState)
       const response = await fetch(
@@ -141,7 +141,11 @@ export default function OperatingHoursForm() {
       toast.success('Availability updated successfully!');
       form.reset();
     } catch (error) {
-      toast.error(error.message || 'Something went wrong');
+      if (error instanceof Error) {
+        toast.error(error.message || 'Something went wrong');
+      } else {
+        console.error(error);
+      }
     }
   };
 
@@ -174,7 +178,7 @@ export default function OperatingHoursForm() {
               <div key={day} className="grid grid-cols-1 gap-6 md:grid-cols-4">
                 <FormField
                   control={form.control}
-                  name={`operatingHours[${day}].dayOfWeek`}
+                  name={`operatingHours.${daysOfWeek.indexOf(day)}.dayOfWeek`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>{day}</FormLabel>
@@ -187,7 +191,7 @@ export default function OperatingHoursForm() {
                 />
                 <FormField
                   control={form.control}
-                  name={`operatingHours[${day}].startTime`}
+                  name={`operatingHours.${daysOfWeek.indexOf(day)}.startTime`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Open Time</FormLabel>
@@ -224,7 +228,7 @@ export default function OperatingHoursForm() {
                 />
                 <FormField
                   control={form.control}
-                  name={`operatingHours[${day}].endTime`}
+                  name={`operatingHours.${daysOfWeek.indexOf(day)}.dayOfWeek`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Close Time</FormLabel>

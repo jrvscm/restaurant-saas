@@ -31,11 +31,8 @@ import {
 } from '@/components/ui/sidebar';
 import { navItems } from '@/constants/data';
 import {
-  BadgeCheck,
-  Bell,
   ChevronRight,
   ChevronsUpDown,
-  CreditCard,
   GalleryVerticalEnd,
   LogOut
 } from 'lucide-react';
@@ -45,7 +42,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as React from 'react';
 import { Icons } from '../icons';
-import { open } from 'fs/promises';
 
 export const company = {
   name: 'Acme Inc',
@@ -101,7 +97,6 @@ export default function AppSidebar() {
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton
                         tooltip={item.title}
-                        logger={item.url}
                         isActive={pathname === item.url}
                       >
                         {item.icon && <Icon />}
@@ -155,10 +150,10 @@ export default function AppSidebar() {
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage
+                    {/* <AvatarImage
                       src={session?.user?.image || ''}
                       alt={session?.user?.name || ''}
-                    />
+                    /> */}
                     <AvatarFallback className="rounded-lg">
                       {session?.user?.name?.slice(0, 2)?.toUpperCase() || 'CN'}
                     </AvatarFallback>
@@ -183,10 +178,10 @@ export default function AppSidebar() {
                 <DropdownMenuLabel className="p-0 font-normal">
                   <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                     <Avatar className="h-8 w-8 rounded-lg">
-                      <AvatarImage
+                      {/* <AvatarImage
                         src={session?.user?.image || ''}
                         alt={session?.user?.name || ''}
-                      />
+                      /> */}
                       <AvatarFallback className="rounded-lg">
                         {session?.user?.name?.slice(0, 2)?.toUpperCase() ||
                           'CN'}

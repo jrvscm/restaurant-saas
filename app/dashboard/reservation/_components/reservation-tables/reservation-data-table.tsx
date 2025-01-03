@@ -33,6 +33,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import type { Reservation } from '../../types';
 
 // Define how to style different reservation statuses
 const getStatusStyle = (status: string) => {
@@ -48,9 +49,9 @@ const getStatusStyle = (status: string) => {
   }
 };
 
-interface ReservationDataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+interface ReservationDataTableProps {
+  columns: ColumnDef<Reservation, unknown>[];
+  data: Reservation[];
   totalItems: number;
   pageSizeOptions?: number[];
   onStatusChange: (id: string, status: string) => void;
@@ -69,7 +70,7 @@ const convertTo12HourFormat = (time: string) => {
   return `${adjustedHour}:${formattedMinute} ${period}`;
 };
 
-export function ReservationDataTable<TData, TValue>({
+export function ReservationDataTable({
   columns,
   data,
   totalItems,
@@ -77,7 +78,7 @@ export function ReservationDataTable<TData, TValue>({
   onStatusChange,
   fetchReservations,
   handleArchive
-}: ReservationDataTableProps<TData, TValue>) {
+}: ReservationDataTableProps) {
   const pathname = usePathname();
   const [currentPage, setCurrentPage] = useQueryState(
     'page',

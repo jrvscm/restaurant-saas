@@ -3,15 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import ThemeProvider from './ThemeToggle/theme-provider';
-import { toast } from 'sonner';
 
-export default function Providers({
-  session,
-  children
-}: {
-  session: SessionProviderProps['session'];
-  children: React.ReactNode;
-}) {
+export default function Providers({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   useEffect(() => {

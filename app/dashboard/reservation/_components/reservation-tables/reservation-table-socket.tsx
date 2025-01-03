@@ -4,15 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSocket } from '@/hooks/use-socket';
 import ReservationTable from '../reservation-tables';
 import { useSession } from '@/hooks/use-session';
-
-type Reservation = {
-  id: string;
-  date: string;
-  time: string;
-  guests: number;
-  status: string;
-  notes?: string;
-};
+import type { Reservation } from '../../types';
 
 type ReservationTableWithSocketProps = {
   data: Reservation[];

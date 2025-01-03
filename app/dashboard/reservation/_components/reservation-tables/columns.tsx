@@ -1,8 +1,9 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
+import { Reservation } from '../../types';
 
-export const columns: ColumnDef<any>[] = [
+export const columns: ColumnDef<Reservation>[] = [
   { accessorKey: 'date', header: 'Date' },
   { accessorKey: 'time', header: 'Time' },
   { accessorKey: 'guests', header: 'Guests' },
