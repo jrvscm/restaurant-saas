@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { decodeJwt } from '../lib/utils'; // Install with `npm install jwt-decode`
+import { decodeJwt } from '../lib/utils';
 
 export interface User {
   id: string;

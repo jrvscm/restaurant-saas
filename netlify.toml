@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/backend/*"
+  to = "https://restaurant-saas-api-84ed2ff50b77.herokuapp.com/:splat"
+  status = 200
+  force = true
