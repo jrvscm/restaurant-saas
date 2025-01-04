@@ -1,3 +1,5 @@
+import React from 'react';
+
 const icons = {
   pizzaPaddle: (
     <svg
@@ -1346,12 +1348,24 @@ const icons = {
 };
 
 interface IconProps {
-  name: string; // Define the expected type for the 'name' property
-  className?: string; // Define the expected type for the 'className' property
+  name: keyof typeof icons; // Restrict `name` to the keys in the `icons` object
+  className?: string; // Additional CSS classes
 }
 
 export const Icon: React.FC<IconProps> = ({ name, className }) => {
-  return <i className={`icon-${name} ${className ? className : ''}`} />;
+  const IconComponent = icons[name];
+
+  if (!IconComponent) {
+    console.error(`Icon "${name}" not found`);
+    return null;
+  }
+
+  // Clone the icon to apply additional class names if necessary
+  return React.cloneElement(IconComponent, {
+    className: `${IconComponent.props.className || ''} ${
+      className || ''
+    }`.trim()
+  });
 };
 
 export default Icon;
