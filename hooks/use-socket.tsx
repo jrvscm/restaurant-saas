@@ -13,6 +13,7 @@ export function useSocket({ organizationId }: UseSocketProps) {
   useEffect(() => {
     // Initialize the socket connection
     const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
+      path: `${process.env.NEXT_PUBLIC_SOCKET_URL}/socket.io`,
       query: { organizationId },
       withCredentials: true
     });

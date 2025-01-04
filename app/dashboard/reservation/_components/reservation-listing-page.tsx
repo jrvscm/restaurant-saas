@@ -90,6 +90,7 @@ export default function ReservationListingPage() {
     fetchReservations();
     if (!isArchive) {
       const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
+        path: `${process.env.NEXT_PUBLIC_SOCKET_URL}/socket.io`,
         query: {
           organizationId: session.user.organizationId || ''
         },
