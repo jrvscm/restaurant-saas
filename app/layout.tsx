@@ -8,8 +8,8 @@ import '@fontsource/fredericka-the-great';
 import { headers } from 'next/headers';
 
 export const metadata: Metadata = {
-  title: 'Dynamic Theming Example',
-  description: 'Landing and Dashboard Theming with Middleware'
+  title: 'Pizza Slice Co',
+  description: 'Pizza Slice demo'
 };
 
 const lato = Lato({

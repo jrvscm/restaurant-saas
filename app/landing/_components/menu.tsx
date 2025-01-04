@@ -19,9 +19,7 @@ export const Menu = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const menuSection = document.getElementById(
-        'menu-section'
-      ) as HTMLElement;
+      const menuSection = document.getElementById('menu') as HTMLElement;
       if (!menuSection) return;
 
       const menuTop = menuSection.getBoundingClientRect().top;
