@@ -4,10 +4,3 @@
   to = "https://restaurant-saas-api-84ed2ff50b77.herokuapp.com/:splat"
   status = 200
   force = true
-
-# Redirect for WebSocket traffic
-[[redirects]]
-  from = "/backend/socket.io/*"
-  to = "https://restaurant-saas-api-84ed2ff50b77.herokuapp.com/socket.io/:splat"
-  status = 200
-  force = true
