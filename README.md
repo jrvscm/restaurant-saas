@@ -42,12 +42,14 @@ _This project was initially forked from [Kiranism's Next.js dashboard starter](h
 ## Features
 
 - **Reservation Management**: Real-time updates and CRUD operations for reservations using Socket.IO.
+- **Reservation Clients**: Reservation availability dynamically generated based on Organization open close hours.
 - **User & Organization Management**: Role-based access control with admin and user roles.
 - **Authentication**: Secure JWT-based authentication with support for organization-based access.
 - **Analytics Dashboard**: Interactive charts and analytics for restaurant performance.
 - **Kanban Board**: Task management with drag-and-drop functionality.
 - **Dynamic Forms**: Multi-step forms for organization setup and profile management.
 - **Robust API Integration**: All endpoints dynamically handled via the backend.
+- **Organization API Keys**: Publicly acessible routes with api key validation for client sites
 
 ## Pages
 
