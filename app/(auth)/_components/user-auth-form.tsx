@@ -74,7 +74,12 @@ export default function UserAuthForm({ isSignUp }: { isSignUp: boolean }) {
             ? 'Organization registered successfully!'
             : 'Logged in successfully!'
         );
-        router.push('/dashboard');
+        const userData = await response.json();
+        if (userData?.role === 'user') {
+          router.push(`/rewards/${userData.id}`);
+        } else {
+          router.push('/dashboard');
+        }
       } catch (error: any) {
         toast.error(error.message || 'Something went wrong. Please try again.');
       }
