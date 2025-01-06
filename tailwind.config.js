@@ -131,6 +131,14 @@ module.exports = {
           to: {
             height: '0'
           }
+        },
+        spin: {
+          from: {
+            transform: 'rotate(0deg)'
+          },
+          to: {
+            transform: 'rotate(360deg)'
+          }
         }
       },
       animation: {
@@ -138,7 +146,8 @@ module.exports = {
         'slide-out-left': 'slide-out-left 0.3s ease-in',
         'fade-in': 'fade-in .35s ease-in',
         'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out'
+        'accordion-up': 'accordion-up 0.2s ease-out',
+        spin: 'spin .35s linear infinite'
       }
     }
   },
