@@ -45,15 +45,6 @@ export default function RewardsPage() {
     setIsOpen(true);
   };
 
-  const formatDate = (date: string) => {
-    const mutatedDate = new Date(date);
-    const options = { month: 'long', day: '2-digit', year: 'numeric' };
-    const formattedDate = new Intl.DateTimeFormat('en-US', options).format(
-      mutatedDate
-    );
-    return formattedDate;
-  };
-
   const fetchLoyaltyData = async () => {
     if (!session) return;
     setFetching(true);
@@ -173,7 +164,7 @@ export default function RewardsPage() {
       </div>
 
       <div className="relative ml-auto mr-auto w-full max-w-[800px]">
-        <div className="ml-4 ml-4 mr-4 mr-4 rounded-lg bg-white p-4 shadow-lg">
+        <div className="ml-4 mr-4 rounded-lg bg-white p-4 shadow-lg">
           <div className="flex flex-col items-start justify-center">
             <UserPlus className="mb-1 mb-1 mr-2 h-6 w-6 text-secondary-foreground" />
             <div
@@ -241,15 +232,12 @@ export default function RewardsPage() {
         </div>
       </div>
 
-      <PageContainer
-        scrollable={false}
-        className="mx-auto h-full w-full max-w-[800px] p-4"
-      >
-        <div className="w-full">
-          <div className="space-y-4 rounded-lg">
+      <PageContainer scrollable={false} className="h-full w-full">
+        <div className="ml-auto mr-auto w-full max-w-[800px] space-y-4">
+          <div className="rounded-lg">
             {/* Points History */}
             {history.map((entry: PointsHistory, index: number) => (
-              <div key={index} className="relative mb-4  rounded-lg shadow-lg">
+              <div key={index} className="relative mb-4 rounded-lg shadow-lg">
                 <div className="flex flex-row items-center rounded-lg bg-white p-4">
                   <div className="flex items-center justify-center">
                     <h2 className="text-md font-bold">
