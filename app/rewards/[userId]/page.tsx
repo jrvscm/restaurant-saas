@@ -5,6 +5,7 @@ import PageContainer from '@/components/layout/page-container';
 import { useSession } from '@/hooks/use-session';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useLogout } from '@/hooks/use-logout';
 import {
   Sparkle,
   Coins,
@@ -39,6 +40,7 @@ export default function RewardsPage() {
   const [fetching, setFetching] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState<'redeem' | 'earn' | 'refer'>('refer');
+  const logout = useLogout();
 
   const openSlider = (selectedMode: 'redeem' | 'earn' | 'refer') => {
     setMode(selectedMode);
@@ -97,7 +99,9 @@ export default function RewardsPage() {
           <div className="mb-[1rem] w-[fit-content] rounded-lg bg-black/10 p-1">
             <Coins className="h-6 w-6" />
           </div>
-          <Button className="h-[32px]">Log Out</Button>
+          <Button onClick={logout} className="h-[32px]">
+            Log Out
+          </Button>
         </div>
         <span className="mx-auto w-full max-w-[800px] text-sm">Welcome to</span>
         <div className="mx-auto flex w-full max-w-[800px] flex-row items-center justify-between">
