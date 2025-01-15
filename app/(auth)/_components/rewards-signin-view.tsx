@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import RewardsAuthForm from './rewards-user-auth-form';
+import { Coins, CircleDollarSign, Copy } from 'lucide-react';
 
 export default function RewardsSigninView() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -9,15 +10,76 @@ export default function RewardsSigninView() {
   return (
     <div className="relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       {/* Left Section */}
-      <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
-        <div className="absolute inset-0 bg-zinc-900" />
-        <div className="relative z-20 flex items-center text-lg font-medium">
-          <img
-            className="lg:h-24"
-            src="//images.ctfassets.net/dho5s3z0t7k5/39JXwo33YwseydUU1Izzdt/5e744498e883e3837ca91c48cd808c39/10219-removebg-preview.png"
-            alt="Rewards Program Logo"
-          />
-          Rewards Program
+      <div className="relative hidden h-full flex-col p-10 text-white lg:flex">
+        <div className="absolute inset-0 bg-secondary" />
+        <div className="relative z-20 flex items-center text-lg font-medium text-secondary-foreground">
+          <div className="mr-[1rem] w-[fit-content] rounded-lg bg-black/10 p-1">
+            <Coins className="h-6 w-6" />
+          </div>
+          <span>Rewards Plus</span>
+        </div>
+
+        <div className="relative z-20 mb-16 mt-32 flex items-center text-lg font-medium text-secondary-foreground">
+          <h2 className="font-heading text-5xl">
+            Sign up for exclusive <br />
+            rewards and discounts
+          </h2>
+        </div>
+        <div className="relative z-20 flex-col items-center text-lg font-medium text-secondary-foreground">
+          <h2 className="mb-4 text-xl font-bold">Earn more when you spend</h2>
+          <div className="relative flex flex-col items-start">
+            {/* Step 1 */}
+            <div className="relative flex items-start">
+              <div className="flex flex-col items-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-black/50 text-lg font-bold text-secondary-foreground">
+                  1
+                </div>
+                <div className="h-12 w-[1px] bg-black/50"></div>
+              </div>
+              <p className="text-md ml-4 mt-4">Spend money in our stores</p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="relative flex items-start">
+              <div className="flex flex-col items-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-black/50 text-lg font-bold text-secondary-foreground">
+                  2
+                </div>
+                <div className="h-12 w-[1px] bg-black/50"></div>
+              </div>
+              <p className="text-md ml-4 mt-4">
+                Enter your rewards id at checkout
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="relative flex items-start">
+              <div className="flex flex-col items-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-black/50 text-lg font-bold text-secondary-foreground">
+                  3
+                </div>
+              </div>
+              <p className="text-md ml-4 mt-4">
+                Points are added automatically
+              </p>
+            </div>
+          </div>
+          <div className="flex w-12 flex-col items-center">
+            <div className="h-12 w-[1px] bg-black/50"></div>
+          </div>
+          <div className="rounded-lg rounded-bl-none rounded-br-none border border-b-0 border-black/50 p-4">
+            <div className="flex flex-row items-center justify-start">
+              <CircleDollarSign className="mr-1 h-6 w-6 text-secondary-foreground" />
+              <p className="text-sm">1 Dollar</p>
+            </div>
+            <h3 className="mb-4 mt-1 text-lg font-bold">10 Points</h3>
+            <p className="text-lg">Points deducted automatically at checkout</p>
+          </div>
+          <div className="rounded-lg rounded-tl-none rounded-tr-none border border-black/50 bg-black/10 p-4">
+            <p className="text-secondary-foreground">
+              Refer 5 friends and get extra rewards!
+            </p>
+          </div>
         </div>
       </div>
 

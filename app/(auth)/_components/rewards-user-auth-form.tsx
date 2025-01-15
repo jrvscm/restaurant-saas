@@ -88,8 +88,9 @@ export default function RewardsAuthForm({ isSignUp }: { isSignUp: boolean }) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Full Name</FormLabel>
-                  <FormControl>
+                  <FormControl className="border border-secondary-foreground">
                     <Input
+                      className="focus-visible:ring-1 focus-visible:ring-secondary-foreground"
                       type="text"
                       placeholder="John Doe"
                       disabled={loading}
@@ -106,8 +107,9 @@ export default function RewardsAuthForm({ isSignUp }: { isSignUp: boolean }) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Phone</FormLabel>
-                  <FormControl>
+                  <FormControl className="border border-secondary-foreground">
                     <Input
+                      className="focus-visible:ring-1 focus-visible:ring-secondary-foreground"
                       type="tel"
                       placeholder="1234567890"
                       disabled={loading}
@@ -126,8 +128,9 @@ export default function RewardsAuthForm({ isSignUp }: { isSignUp: boolean }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
-              <FormControl>
+              <FormControl className="border border-secondary-foreground">
                 <Input
+                  className="focus-visible:ring-1 focus-visible:ring-secondary-foreground"
                   type="email"
                   placeholder="yourname@example.com"
                   disabled={loading}
@@ -144,8 +147,9 @@ export default function RewardsAuthForm({ isSignUp }: { isSignUp: boolean }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Password</FormLabel>
-              <FormControl>
+              <FormControl className="border border-secondary-foreground">
                 <Input
+                  className="focus-visible:ring-1 focus-visible:ring-secondary-foreground"
                   type="password"
                   placeholder="••••••••"
                   disabled={loading}
