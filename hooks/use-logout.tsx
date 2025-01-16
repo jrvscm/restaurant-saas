@@ -1,9 +1,10 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 export function useLogout() {
   const router = useRouter();
+  const pathname = usePathname();
 
   const logout = async () => {
     try {
@@ -17,7 +18,11 @@ export function useLogout() {
       }
 
       // Redirect to the login page
-      router.push('/signin');
+      if (pathname.includes('/rewards')) {
+        router.push('/rewards/signin');
+      } else {
+        router.push('/signin');
+      }
     } catch (error) {
       console.error('Logout failed:', error);
     }

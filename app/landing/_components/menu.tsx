@@ -12,8 +12,10 @@ import { Icon } from '@/components/custom-icons';
 import { ReservationForm } from './reservation-form';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 export const Menu = () => {
+  const router = useRouter();
   const menuSectionRef = useRef(null);
   const [isSticky, setIsSticky] = useState(false);
 
@@ -330,7 +332,7 @@ export const Menu = () => {
               that you can redeem for items in our store!
             </p>
             <Button
-              onClick={() => toast.success('Site is in demo mode')}
+              onClick={() => router.push('/rewards/signin')}
               className="
               w-full bg-secondary
               text-secondary-foreground hover:bg-secondary-95 

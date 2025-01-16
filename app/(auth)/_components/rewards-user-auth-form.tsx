@@ -17,13 +17,13 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
+// Validation schema using Zod
 const loginSchema = z.object({
   email: z.string().email('Enter a valid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters long')
 });
 
 const signUpSchema = loginSchema.extend({
-  organizationName: z.string().min(1, 'Organization name is required'),
   fullName: z.string().min(1, 'Full name is required'),
   phone: z.string().regex(/^\d{10}$/, 'Enter a valid 10-digit phone number')
 });
@@ -31,7 +31,7 @@ const signUpSchema = loginSchema.extend({
 type LoginValues = z.infer<typeof loginSchema>;
 type SignUpValues = z.infer<typeof signUpSchema>;
 
-export default function UserAuthForm({ isSignUp }: { isSignUp: boolean }) {
+export default function RewardsAuthForm({ isSignUp }: { isSignUp: boolean }) {
   const router = useRouter();
   const [loading, startTransition] = useTransition();
 
@@ -40,13 +40,7 @@ export default function UserAuthForm({ isSignUp }: { isSignUp: boolean }) {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: isSignUp
-      ? {
-          organizationName: '',
-          fullName: '',
-          email: '',
-          phone: '',
-          password: ''
-        }
+      ? { email: '', password: '', fullName: '', phone: '' }
       : { email: '', password: '' }
   });
 
@@ -54,12 +48,15 @@ export default function UserAuthForm({ isSignUp }: { isSignUp: boolean }) {
     startTransition(async () => {
       try {
         const endpoint = isSignUp
-          ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register/organization`
-          : `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`;
+          ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/rewards/register`
+          : `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/rewards/login`;
 
         const response = await fetch(endpoint, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            apiKey: `${process.env.NEXT_PUBLIC_API_KEY}`
+          },
           credentials: 'include',
           body: JSON.stringify(data)
         });
@@ -70,12 +67,10 @@ export default function UserAuthForm({ isSignUp }: { isSignUp: boolean }) {
         }
 
         toast.success(
-          isSignUp
-            ? 'Organization registered successfully!'
-            : 'Logged in successfully!'
+          isSignUp ? 'Signed up successfully!' : 'Logged in successfully!'
         );
         const userData = await response.json();
-        router.push('/dashboard');
+        router.push(`/rewards/${userData?.user?.id}`);
       } catch (error: any) {
         toast.error(error.message || 'Something went wrong. Please try again.');
       }
@@ -89,30 +84,13 @@ export default function UserAuthForm({ isSignUp }: { isSignUp: boolean }) {
           <>
             <FormField
               control={form.control}
-              name="organizationName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Organization Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Company Name"
-                      disabled={loading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="fullName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Full Name</FormLabel>
-                  <FormControl>
+                  <FormControl className="border border-secondary-foreground">
                     <Input
+                      className="focus-visible:ring-1 focus-visible:ring-secondary-foreground"
                       type="text"
                       placeholder="John Doe"
                       disabled={loading}
@@ -129,8 +107,9 @@ export default function UserAuthForm({ isSignUp }: { isSignUp: boolean }) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Phone</FormLabel>
-                  <FormControl>
+                  <FormControl className="border border-secondary-foreground">
                     <Input
+                      className="focus-visible:ring-1 focus-visible:ring-secondary-foreground"
                       type="tel"
                       placeholder="1234567890"
                       disabled={loading}
@@ -149,10 +128,11 @@ export default function UserAuthForm({ isSignUp }: { isSignUp: boolean }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
-              <FormControl>
+              <FormControl className="border border-secondary-foreground">
                 <Input
+                  className="focus-visible:ring-1 focus-visible:ring-secondary-foreground"
                   type="email"
-                  placeholder="admin@example.com"
+                  placeholder="yourname@example.com"
                   disabled={loading}
                   {...field}
                 />
@@ -167,8 +147,9 @@ export default function UserAuthForm({ isSignUp }: { isSignUp: boolean }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Password</FormLabel>
-              <FormControl>
+              <FormControl className="border border-secondary-foreground">
                 <Input
+                  className="focus-visible:ring-1 focus-visible:ring-secondary-foreground"
                   type="password"
                   placeholder="••••••••"
                   disabled={loading}
