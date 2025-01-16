@@ -1,4 +1,4 @@
-import { Metadata } from './next';
+import { Metadata } from 'next';
 import RewardsSigninView from '../../(auth)/_components/rewards-signin-view';
 
 export const metadata: Metadata = {

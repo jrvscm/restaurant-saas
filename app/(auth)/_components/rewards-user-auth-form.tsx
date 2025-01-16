@@ -70,7 +70,7 @@ export default function RewardsAuthForm({ isSignUp }: { isSignUp: boolean }) {
           isSignUp ? 'Signed up successfully!' : 'Logged in successfully!'
         );
         const userData = await response.json();
-        router.push(`/rewards/${userData.id}`);
+        router.push(`/rewards/${userData?.user?.id}`);
       } catch (error: any) {
         toast.error(error.message || 'Something went wrong. Please try again.');
       }

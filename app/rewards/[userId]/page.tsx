@@ -236,30 +236,32 @@ export default function RewardsPage() {
         </div>
       </div>
 
-      <PageContainer scrollable={false} className="h-full w-full">
-        <div className="ml-auto mr-auto w-full max-w-[800px] space-y-4">
-          <div className="rounded-lg">
-            {/* Points History */}
-            {history.map((entry: PointsHistory, index: number) => (
-              <div key={index} className="relative mb-4 rounded-lg shadow-lg">
-                <div className="flex flex-row items-center rounded-lg bg-white p-4">
-                  <div className="flex items-center justify-center">
-                    <h2 className="text-md font-bold">
-                      {entry.type === 'earned' ? '+' : '-'} {entry.points}{' '}
-                      Points
-                    </h2>
-                  </div>
-                  <div className="ml-[auto] flex-col items-center justify-center">
-                    <p className="text-center text-2xl font-bold text-secondary-foreground">
-                      {entry.points}
-                    </p>
-                    <p className="text-md text-secondary-foreground">
-                      ${entry.points * 0.1}
-                    </p>
+      <PageContainer scrollable={false}>
+        <div className="h-full w-full">
+          <div className="ml-auto mr-auto w-full max-w-[800px] space-y-4">
+            <div className="rounded-lg">
+              {/* Points History */}
+              {history.map((entry: PointsHistory, index: number) => (
+                <div key={index} className="relative mb-4 rounded-lg shadow-lg">
+                  <div className="flex flex-row items-center rounded-lg bg-white p-4">
+                    <div className="flex items-center justify-center">
+                      <h2 className="text-md font-bold">
+                        {entry.type === 'earned' ? '+' : '-'} {entry.points}{' '}
+                        Points
+                      </h2>
+                    </div>
+                    <div className="ml-[auto] flex-col items-center justify-center">
+                      <p className="text-center text-2xl font-bold text-secondary-foreground">
+                        {entry.points}
+                      </p>
+                      <p className="text-md text-secondary-foreground">
+                        ${entry.points * 0.1}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </PageContainer>
