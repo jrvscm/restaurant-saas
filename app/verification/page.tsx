@@ -4,10 +4,11 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useSession } from '@/hooks/use-session';
 
 export default function VerificationPage() {
   const router = useRouter();
-
+  const { session } = useSession();
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const success = params.get('success');
@@ -26,13 +27,22 @@ export default function VerificationPage() {
 
   const handleResend = async () => {
     try {
-      const response = await fetch('/api/auth/resend-verification', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/resend-verification`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apiKey: `${process.env.NEXT_PUBLIC_API_KEY}`
+          },
+          body: JSON.stringify({
+            email: session?.user?.email
+          })
+        }
+      );
 
       if (response.ok) {
-        alert('Verification email resent successfully!');
+        alert('Verification email re-sent successfully!');
       } else {
         alert('Failed to resend verification email.');
       }
@@ -40,6 +50,7 @@ export default function VerificationPage() {
       console.error('Error resending verification email:', error);
     }
   };
+  if (!session) return;
 
   return (
     <div className="w-full">
@@ -53,7 +64,8 @@ export default function VerificationPage() {
               We need to verify your account.
             </h1>
             <p className="max-w-2xl text-center text-lg leading-relaxed tracking-tight text-muted-foreground md:text-xl">
-              We&apos;ve sent an email to your registered address. Please check your inbox and confirm your account.
+              We&apos;ve sent an email to your registered address. Please check
+              your inbox and confirm your account.
             </p>
           </div>
           <div className="flex flex-row gap-3">
