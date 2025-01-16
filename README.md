@@ -52,6 +52,7 @@ _This project was initially forked from [Kiranism's Next.js dashboard starter](h
 
 - **Reservation Management**: Real-time updates and CRUD operations for reservations using Socket.IO.
 - **Reservation Clients**: Reservation availability dynamically generated based on Organization open close hours.
+- **Rewards Clients**: Rewards via stripe webhooks from stripe POS. Enter rewards ID in transaction notes and gets parsed to calculate user rewards points.
 - **User & Organization Management**: Role-based access control with admin and user roles.
 - **Authentication**: Secure JWT-based authentication with support for organization-based access.
 - **Analytics Dashboard**: Interactive charts and analytics for restaurant performance.
