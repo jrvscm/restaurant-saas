@@ -105,7 +105,7 @@ export default function RewardsPage() {
         </div>
         <span className="mx-auto w-full max-w-[800px] text-sm">Welcome to</span>
         <div className="mx-auto flex w-full max-w-[800px] flex-row items-center justify-between">
-          <span className="text-2xl font-bold">Rewards Plus</span>
+          <span className="text-2xl font-bold">Rewardable</span>
           <RefreshCcw
             role="button"
             onClick={fetchLoyaltyData}

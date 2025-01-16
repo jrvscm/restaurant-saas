@@ -21,18 +21,8 @@ export default function SignInViewPage() {
             className="lg:h-24"
             src="//images.ctfassets.net/dho5s3z0t7k5/39JXwo33YwseydUU1Izzdt/5e744498e883e3837ca91c48cd808c39/10219-removebg-preview.png"
           />
-          Pizza Slice
+          Pizza Slice LLC
         </div>
-        {/* <div className="relative z-20 mt-auto">
-          <blockquote className="space-y-2">
-            <p className="text-lg">
-              &ldquo;This library has saved me countless hours of work and
-              helped me deliver stunning designs to my clients faster than ever
-              before.&rdquo;
-            </p>
-            <footer className="text-sm">Sofia Davis</footer>
-          </blockquote>
-        </div> */}
       </div>
       <div className="flex h-full items-center p-4 lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">

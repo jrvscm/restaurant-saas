@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import RewardsAuthForm from './rewards-user-auth-form';
-import { Coins, CircleDollarSign, Copy } from 'lucide-react';
+import { Coins, CircleDollarSign } from 'lucide-react';
 
 export default function RewardsSigninView() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -16,10 +16,10 @@ export default function RewardsSigninView() {
           <div className="mr-[1rem] w-[fit-content] rounded-lg bg-black/10 p-1">
             <Coins className="h-6 w-6" />
           </div>
-          <span>Rewards Plus</span>
+          <span>Rewardable</span>
         </div>
 
-        <div className="relative z-20 mb-16 mt-32 flex items-center text-lg font-medium text-secondary-foreground">
+        <div className="relative z-20 mb-16 mt-24 flex items-center text-lg font-medium text-secondary-foreground">
           <h2 className="font-heading text-5xl">
             Sign up for exclusive <br />
             rewards and discounts

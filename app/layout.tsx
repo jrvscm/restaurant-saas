@@ -5,10 +5,9 @@ import { Lato } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 import './globals.css';
 import '@fontsource/fredericka-the-great';
-import { headers } from 'next/headers';
 
 export const metadata: Metadata = {
-  title: 'Pizza Slice Co',
+  title: 'Pizza Slice LLC',
   description: 'Pizza Slice demo'
 };
 

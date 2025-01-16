@@ -93,8 +93,8 @@ export const Navbar = () => {
           <Button variant="ghostMuted" className="hidden lg:inline" asChild>
             <a href="tel:+13073631743">(333) PIZZA-PIE</a>
           </Button>
-          <Link href={'/signin'}>
-            <Button>Sign in</Button>
+          <Link href={'/rewards/signin'}>
+            <Button>Rewards</Button>
           </Link>
         </div>
 
@@ -152,15 +152,8 @@ export const Navbar = () => {
 
             {/* Buttons at the bottom */}
             <div className="flex flex-col gap-4">
-              {/* <Button
-                variant="outline"
-                className="w-full bg-transparent text-primary-foreground border-primary focus:bg-transparent"
-                onClick={() => setOpen(false)}
-              >
-                Sign in
-              </Button> */}
               {
-                <Link href="/signin">
+                <Link href="/rewards/signin">
                   <Button className="w-full" onClick={() => setOpen(false)}>
                     Sign In
                   </Button>
