@@ -8,13 +8,16 @@
 <br />
 <div align="center">
 <a href="https://pizzalander.netlify.app">View Landing Page</a>
-  <br>
+<br>
+  
 <a href="https://pizzalander.netlify.app/signin">View Dashboard</a><br>
 <span>
   login with <br>
   admin@example.com <br>
   admin123
 <span>
+<br>
+  
 <a href="https://pizzalander.netlify.app/rewards/signin">View Rewards </a><br>
 <span>
   login with <br>
