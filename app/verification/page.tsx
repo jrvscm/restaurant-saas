@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useSession } from '@/hooks/use-session';
+import { toast } from 'sonner';
 
 export default function VerificationPage() {
   const router = useRouter();
@@ -31,6 +32,7 @@ export default function VerificationPage() {
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/resend-verification`,
         {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
             apiKey: `${process.env.NEXT_PUBLIC_API_KEY}`
@@ -42,9 +44,9 @@ export default function VerificationPage() {
       );
 
       if (response.ok) {
-        alert('Verification email re-sent successfully!');
+        toast.success('Verification email re-sent successfully!');
       } else {
-        alert('Failed to resend verification email.');
+        toast.error('Failed to resend verification email.');
       }
     } catch (error) {
       console.error('Error resending verification email:', error);
