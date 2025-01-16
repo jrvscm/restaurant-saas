@@ -6,21 +6,21 @@
 <div align="center"><strong>Next.js 14 Admin Dashboard for Restaurant Management</strong></div>
 <div align="center">Built with the Next.js App Router</div>
 <br />
+
 <div align="center">
-<a href="https://pizzalander.netlify.app">View Landing Page</a>
-<br>
-  
-<a href="https://pizzalander.netlify.app/signin">View Dashboard</a><br>
+<a href="https://pizzalander.netlify.app">View Landing Page</a><br>
+<a href="https://pizzalander.netlify.app/rewards/signin">View Rewards </a><br>
+<a href="https://pizzalander.netlify.app/signin">View Dashboard</a><br><br>
+
 <span>
-  login with <br>
+  Dashboard Demo Login:<br>
   admin@example.com <br>
   admin123
 <span>
-<br>
+<br><br>
   
-<a href="https://pizzalander.netlify.app/rewards/signin">View Rewards </a><br>
 <span>
-  login with <br>
+  Rewards Demo Login: <br>
   user@example.com <br>
   user123
 <span>
