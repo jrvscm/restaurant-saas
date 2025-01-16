@@ -15,7 +15,7 @@
   admin@example.com <br>
   admin123
 <span>
-<a href="https://pizzalander.netlify.app/rewards/signin">View Rewards /a><br>
+<a href="https://pizzalander.netlify.app/rewards/signin">View Rewards </a><br>
 <span>
   login with <br>
   user@example.com <br>
